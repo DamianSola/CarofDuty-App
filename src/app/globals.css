@@ -18,6 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  scroll-behavior:smooth;
   background: linear-gradient(
       to bottom,
       transparent,
@@ -30,4 +31,167 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.next-button{
+  background-color: #4CAF50;
+  padding: 5px 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+}
+
+.next-button:hover{
+  background-color: #3e8e41;
+}
+
+.select{
+  padding: 2px 5px;
+  border: solid 1px black;
+  border-radius: 2px;
+  font-size: 15px;
+
+}
+
+.label{
+  padding: 5px 10px;
+  font-size: 15px;
+  width: auto;
+}
+
+.input{
+  padding: 2px 5px;
+  border: solid 1px black;
+  margin: 5px 0px
+}
+
+.option{
+  padding: 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  margin: 10px;
+
+}
+
+.list{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(243, 243, 243);
+  margin: 5px 0px;
+  padding: 5px;
+  text-align: left;
+}
+
+.select-admin{
+  padding: 2px 4px;
+  border: solid 1px black;
+  border-radius: 2px;
+}
+
+/*lista puro css*/
+
+
+.table-list {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+
+.table-header, .table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.table-header {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.col {
+  flex-basis: 33.33%;
+  text-align: left;
+}
+
+.table-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.table-row:hover {
+  background-color: #e0e0e0;
+}
+
+
+/*BOTONES DE TODO TIPO*/
+
+/* .simple-button{
+  padding: 0px 4px;
+  border: solid 0.5px;
+  border-radius: 2px;
+  margin: 2px 5px;
+} */
+
+.simple-button {
+  padding: 5px 10px; /* Aumenta el padding para un mejor tamaño del botón */
+  border: 2px solid #3498db; /* Borde más grueso y color definido */
+  border-radius: 8px; /* Bordes redondeados */
+  margin: 5px 10px; /* Espaciado más cómodo */
+  background-color: transparent; /* Fondo transparente inicialmente */
+  color: #3498db; /* Color de texto a juego con el borde */
+  font-size: 16px; /* Tamaño de fuente más legible */
+  font-weight: 500; /* Un peso de fuente un poco más grueso */
+  cursor: pointer; /* Cambio de cursor al estilo de un botón */
+  transition: all 0.3s ease; /* Suaviza las transiciones de cambios de color y tamaño */
+}
+
+.simple-button:hover {
+  background-color: #3498db; /* Fondo azul al pasar el cursor */
+  color: #fff; /* Texto blanco cuando el fondo es azul */
+  transform: scale(1.05); /* Efecto de agrandamiento suave */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para un efecto de elevación */
+}
+
+.simple-button:active {
+  transform: scale(0.95); /* Ligeramente más pequeño cuando se hace clic */
+}
+
+
+/* .simple-button:hover{
+  background-color: #f2f2f2;
+} */
+
+.message-error{
+  padding: 5px;
+  margin:auto;
+  background-color: rgba(255, 0, 0, 0.231);
+  color: red;
+  font-size: 15px;
+  border-radius: 5px;
+  width: auto;
+}
+
+.form{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.textarea{
+  margin: auto;
+}
+
+.form article{
+  width: 50%;
+  margin: auto;
 }
