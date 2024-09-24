@@ -178,9 +178,7 @@ const CurrentDates = () => {
 
     <AddTurnButton show={showButton} handleSubmitTrun={handleSubmitTrun}/>
 
-</div>
-
-    )
+    </div>)
 }
 
 export default CurrentDates;
