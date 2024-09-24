@@ -34,35 +34,84 @@ const AddCar = ({open, brand}) => {
  
 
     return(
-        <div className='p-4 bg-gray-200'>
-            <span className='text-sm text-blue-500'>{seeBrand && seeBrand}</span>
-            <form onSubmit={HandleSubmit} className='md:flex-wrap items-center py-4' onChange={(e) => handleChange(e)}>
-                <label className='label' >nombre</label>
-                <input type="text" name="name"  className='input' required/>
-                <label className='label'>tipo de auto</label>
-                <select className='select' name="type"  onChange={(e) => handleChange(e)} required>
-                    <option  value={null}>---seleccionar---</option>
-                    <option  value="auto">auto</option>
-                    <option  value="camioneta">camioneta</option>
-                </select>
-                <br/>
-                <label className='label'>motor</label>
-                <input  className='input' type="text" name="motor" required/>
-                <label className='label'>marca</label>
-                <select
-                className='select' 
-                id="options" name="brand"  onChange={(e) => handleChange(e)} required>
-                    <option  value={null}>---seleccionar---</option>
-                  
-                {brand.brands && brand.brands.map((marca, index) => {
-                    return <option value={marca._id} key={index}>{marca.name}</option>
-                })}
-            </select>
-            {error && <p className='message-error'>{error}</p>}
-            <br/>
-            <button type='submit' className='simple-button text-blue-500'>agregar auto</button>
+        <div className='p-6 bg-white rounded-lg shadow-md max-w-96 m-auto'>
+        {/* Marca seleccionada */}
+            <span className='block text-lg text-blue-600 font-medium mb-4'>
+            {seeBrand && seeBrand}
+            </span>
+      
+        {/* Formulario */}
+            <form onSubmit={HandleSubmit} className='space-y-4' onChange={(e) => handleChange(e)}>
+            
+            {/* Nombre */}
+                <div>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Nombre</label>
+                    <input 
+                    type="text" 
+                    name="name" 
+                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                    required
+                    />
+                </div>
+        
+            {/* Tipo de auto */}
+                <div>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Tipo de auto</label>
+                    <select 
+                    name="type"  
+                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                    onChange={(e) => handleChange(e)} 
+                    required
+                    >
+                    <option value={null}>--- Seleccionar ---</option>
+                    <option value="auto">Auto</option>
+                    <option value="camioneta">Camioneta</option>
+                    </select>
+                </div>
+        
+            {/* Motor */}
+                <div>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Motor</label>
+                    <input 
+                    type="text" 
+                    name="motor" 
+                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                    required
+                    />
+                </div>
+        
+            {/* Marca */}
+                <div>
+                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Marca</label>
+                    <select 
+                    id="options" 
+                    name="brand"  
+                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
+                    onChange={(e) => handleChange(e)} 
+                    required
+                    >
+                    <option value={null}>--- Seleccionar ---</option>
+                    {brand.brands && brand.brands.map((marca, index) => (
+                        <option value={marca._id} key={index}>{marca.name}</option>
+                    ))}
+                    </select>
+                </div>
+        
+            {/* Error Message */}
+                {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
+        
+            {/* Botón */}
+                <div className='flex justify-center'>
+                    <button 
+                    type='submit' 
+                    className='px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300'
+                    >
+                    Agregar Auto
+                    </button>
+                </div>
             </form>
         </div>
+      
     )
 }
 

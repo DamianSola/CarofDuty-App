@@ -8,6 +8,11 @@ import AddProduct from './../admin/AddProduct'
 import ShowProducts from './../admin/ShowProducts'
 // import ShowBrand from './../admin/ShowBrand'
 import ShowService from './../admin/ShowServices'
+import ShowTurns from '../admin/Showturns';
+import BrandHome from '../BrandHome/BrandHome';
+
+
+
 const DashSection = ({title, date}) => {
 
     const [add, setAdd] = useState(false)
@@ -36,15 +41,15 @@ const DashSection = ({title, date}) => {
             {
                 title == 'autos' ? add && <AddCar open={add} brand={date}/> :
                 title == 'marcas' ? add && <AddBrand open={add}/> : 
-                title == 'servicios' ? add && <div>servios adds</div> : 
+                title == 'servicios' ? add && <div>No disponible</div> : 
                 title == 'productos'? add && <AddProduct apen={add}/> : null
             }
             {
                 title == 'autos' ? see && <ShowCars brand={date}/> :
-                title == 'marcas' ? see && <div>marcas</div> :
+                title == 'marcas' ? see && <BrandHome brand={date}/> :
                 title == 'servicios' ? see && <ShowService/> :
                 title == 'productos'? see && <ShowProducts/> :
-                title == 'turnos' ? see && <div>turnos</div> : null
+                title == 'turnos' ? see && <ShowTurns/> : null
             }
         </section>
     )
