@@ -6,12 +6,12 @@ const apiUrl = 'http://localhost:3000'
 
 // Crear una acción asincrónica para obtener todas las marcas de autos
 export const getAllServiceTypes = createAsyncThunk('service/getAllServiceType', async () => {
-  const response = await axios.get(`${apiUrl}/service-type`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}service-type`);
   return response.data; // Esto es lo que se guardará en el estado global
 });
 
 export const getAllProducts = createAsyncThunk('product/getAllproduct', async () => {
-  const response = await axios.get(`${apiUrl}/product`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}product`);
   return response.data; // Esto es lo que se guardará en el estado global
 });
 
@@ -19,7 +19,7 @@ export const getAllProducts = createAsyncThunk('product/getAllproduct', async ()
 
 const postProduct = async (data) => {
   try {
-    const res = await axios.post(`${apiUrl}/product`, data);
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}product`, data);
     return res;
   } catch (error) {
     return error.response;
@@ -28,7 +28,7 @@ const postProduct = async (data) => {
 
 const postService = async (data) => {
   try {
-    const res = await axios.post(`${apiUrl}/service`, data);
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}service`, data);
     return res;
   } catch (error) {
     return error.response;
@@ -37,7 +37,7 @@ const postService = async (data) => {
 
 const deleteService = async (id) => {
   try {
-    const res = await axios.delete(`${apiUrl}/service-type/${id}`);
+    const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}service-type/${id}`);
     return res;
   } catch (error) {
     return error.response;
@@ -46,7 +46,7 @@ const deleteService = async (id) => {
 
 const deleteProduct = async (id) => {
   try {
-    const res = await axios.delete(`${apiUrl}/product/${id}`);
+    const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}product/${id}`);
     return res;
   } catch (error) {
     return error.response;

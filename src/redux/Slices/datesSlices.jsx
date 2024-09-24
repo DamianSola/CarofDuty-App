@@ -7,7 +7,7 @@ const apiUrl = 'http://localhost:3000'
 const postNewTrun = async(data) => {
 
     try {
-        const res = await axios.post(`${apiUrl}/turn`, data);
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}turn`, data);
         return res;
       } catch (error) {
         return error.response;

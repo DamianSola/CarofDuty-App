@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
+
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 // Define la URL base de la API
-const apiUrl = 'http://localhost:3000'
 
 // Crear una acción asincrónica para obtener todas las marcas de autos
 export const getAllBrandCars = createAsyncThunk('brand/getAllBrandCars', async () => {
-  const response = await axios.get(`${apiUrl}/brand`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}brand`);
   return response.data; // Esto es lo que se guardará en el estado global
 });
 
 const postBrand = (data) => {
-  return axios.post(`${apiUrl}/brand`, data)
+  return axios.post(`${process.env.NEXT_PUBLIC_API_URL}brand`, data)
   .then(res => res).catch(error => error.response);
 }
 

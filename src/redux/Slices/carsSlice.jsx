@@ -6,14 +6,14 @@ const apiUrl = 'http://localhost:3000'
 
 // Crear una acción asincrónica para obtener todas las marcas de autos
 export const getAllCars = createAsyncThunk('cars/getAllCars', async () => {
-  const response = await axios.get(`${apiUrl}/car`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}car`);
   return response.data; // Esto es lo que se guardará en el estado global
 });
 
 
 const postCar = async (data) => {
   try {
-    const res = await axios.post(`${apiUrl}/car`, data);
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}car`, data);
     return res;
   } catch (error) {
     return error.response;
