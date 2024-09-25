@@ -9,16 +9,13 @@ const Step1 = ({brand, sprint}) => {
 
     const dispatch = useDispatch()
 
-    const [filter, setFilter] = useState(null)
     const [car, setCar] = useState(null)
     const [error, setError] = useState({})
     
     const {cars, allCars} = useSelector(state => state.car)
     const {products} = useSelector(state => state.service)
-    // console.log(allCars)
         
     const handleClick = () => {
-        // car ? nextStep() : setError({message:"selecciona un modelo de auto"})
 
         if(car){
           let carSelected = cars.find(e => e._id === car)
@@ -26,7 +23,6 @@ const Step1 = ({brand, sprint}) => {
 
           let brand = carSelected.brand._id
           let carProducts = products.filter(p => p.brandCar.includes(brand))
-          // console.log(carProducts)
           dispatch(setProducts(carProducts))
           sprint(2)
         }else{
@@ -43,8 +39,8 @@ const Step1 = ({brand, sprint}) => {
 
     const handleChange = (e) => {
         let {value} = e.target
-        // console.log(value)
-        dispatch(filterByBrand(value))
+        if(value === 'select') dispatch(getAllCars())
+        else dispatch(filterByBrand(value))
     
     }
 
@@ -52,7 +48,6 @@ const Step1 = ({brand, sprint}) => {
     useEffect(()=>{
         dispatch(getAllCars())
         dispatch(getAllProducts())
-        // filterByBrand()
     },[dispatch])
 
 
@@ -71,7 +66,7 @@ const Step1 = ({brand, sprint}) => {
       name="brand"
       onChange={(e) => handleChange(e)}
     >
-      <option value={null}>--- seleccionar ---</option>
+      <option value='select'>--- Todos ---</option>
       {brand.brands && brand.brands.map((marca, index) => (
         <option value={marca._id} key={index}>{marca.name}</option>
       ))}
@@ -80,7 +75,7 @@ const Step1 = ({brand, sprint}) => {
 
   {/* Selección de modelo */}
   <section className="w-full mb-4">
-    <label htmlFor="car-options" className="block text-left text-gray-700 font-medium mb-2">Modelo</label>
+    <label htmlFor="car-options" className="flex text-left text-gray-700 font-medium mb-2">Modelo<p className="text-red-600">*</p></label>
     <select
       className="w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       id="car-options"

@@ -19,12 +19,6 @@ const Step2 = ({sprint}) => {
     const {serviceTypes} = useSelector(state => state.service)
     const {car,products} = useSelector(state => state.data)
 
-
-    const addBasicService = () => {
-        // setServices([...service.concat(basicServices)])
-    }
-
-
     const onClose = () => { //cierra el modal
       setOpen(false)
     }
@@ -50,12 +44,16 @@ const Step2 = ({sprint}) => {
 
     const addService = (e) => { // en esta funcion se crea un servicio nuevo pero no
         let {name, value} = e.target
-        let exist = services.find(e => e.serviceType === value)
+
+        let exist = services.find(e => e.service === value)
+
+        if(exist) alert('El servicio ya esta en la lista')
 
         if(!car){
           alert('Por favor, ingrese un vehiculo')
-          
         }
+
+
         if(!exist && car){
 
           const typeServiceProduct = products.filter(p => p.Service_type._id == value)

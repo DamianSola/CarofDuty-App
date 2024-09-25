@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {createNewTurn} from './../../../redux/Slices/datesSlices';
+import {createNewTurn, postNewTurn} from './../../../redux/Slices/datesSlices';
 import AddTurnButton from './AddTurnButton';
-import {validateSubmit} from './ValidateSubmit'
+import {validateSubmit} from './ValidateSubmit';
+import ModalDates from './modalDates';
 
 
 const CurrentDates = () => {
@@ -11,16 +12,18 @@ const CurrentDates = () => {
 
     const data = useSelector(state => state.data)
 
-    const {car,services,servicesCount,customer, date, statusPost} = data
+    const {car,services,customer, date, status, response} = data
     
     const [dataTime, setDataTime] = useState({ time: '', day: '' });
     const [showButton, setShowButton] = useState(false)
-
+    const [open, setOpen] = useState(false)
 
     const handleSubmitTrun = () => {
        
         if(validateSubmit(data)){
-            dispatch(createNewTurn(data))
+            // dispatch(createNewTurn(data))
+            setOpen(true)
+            dispatch(postNewTurn(data))
         }
     }
     
@@ -64,7 +67,7 @@ const CurrentDates = () => {
             {showButton && <AddTurnButton show={showButton} handleSubmitTrun={handleSubmitTrun}/>}
 
             <div className='max-h-lvh overflow-y-auto'>
-
+           <ModalDates onClose={() => setOpen(false)} isOpen={open} status={status} response={response}/>
            
             {car ? (
             <section className="flex flex-col text-left mb-4 p-4 bg-gray-50 shadow-sm rounded-md w-full">

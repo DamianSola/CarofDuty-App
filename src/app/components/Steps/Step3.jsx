@@ -11,8 +11,20 @@ const Step3 = ({sprint}) => {
         name: "", email:"" , phone:""
     })
 
+    const [error, setError] = useState('');
+
+    const validateEmail = (value) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        setError('Please enter a valid email address');
+      } else {
+        setError(null);
+      }
+    };
+
     const handleChange = (e) => {
         let {name, value} = e.target
+        if(name === 'email') validateEmail(value)
 
         setInput({
             ...input,
@@ -22,7 +34,7 @@ const Step3 = ({sprint}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(setDateCustomer(input))
+        if(!error) dispatch(setDateCustomer(input))
         setInput({})
         sprint(4)
     }
@@ -37,19 +49,23 @@ const Step3 = ({sprint}) => {
         <form onSubmit={handleSubmit} onChange={handleChange}>
 
             <section className="w-full mb-4">
-                <label className="block text-gray-600 font-medium mb-2">Nombre y Apellido</label>
+                <label className="flex text-gray-600 font-medium mb-2">Nombre y Apellido<p className="text-red-600">*</p></label>
                     <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
                     type="text" name='name'/>
             </section>
       
             <section className="w-full mb-4">
-                <label className="block text-gray-600 font-medium mb-2">e-mail</label>
+                <label className="flex text-gray-600 font-medium mb-2">e-mail<p className="text-red-600">*</p></label>
                     <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                    type="text" name='email'/>
+                    type="email" 
+                    name='email'
+                    required 
+                    />
+                    {error && <p className="text-red-500">{error}</p>}
             </section>
 
             <section className="w-full mb-4">
-                <label className="block text-gray-600 font-medium mb-2">telefono</label>
+                <label className="flex text-gray-600 font-medium mb-2">telefono</label>
                     <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
                     type="text" name='phone'/>
             </section>

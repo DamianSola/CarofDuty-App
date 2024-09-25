@@ -1,18 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const apiUrl = 'http://localhost:3000'
+// const localUrl = "http://localhost:3001/"
+// process.env.NEXT_PUBLIC_API_URL
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL || localUrl;
 
-
-const postNewTrun = async(data) => {
-
-    try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}turn`, data);
-        return res;
-      } catch (error) {
-        return error.response;
-      }
-}
+export const postNewTurn = createAsyncThunk(
+    'turn/post',
+    async (data) => {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}turn/`, data);
+      return response.data;
+    }
+  );
 
 const brandSlice = createSlice({
     name: 'TurnDates',
@@ -22,7 +21,10 @@ const brandSlice = createSlice({
       servicesCount:0,
       customer: null,
       date: null,
-      products: []
+      products: [],
+      status: 'idle',
+      response: null,
+      error: null
     },
     reducers: {
 
@@ -31,13 +33,11 @@ const brandSlice = createSlice({
         },
 
         setProducts: (state, action) => {
-            //aca se guardan los productos compatibles con el auto del usuario
             state.products = action.payload;
         },
 
         setDatesServices: (state, action) => {
             state.services =  action.payload;
-            // state.services =  state.services.concat(action.payload);
         },
 
         setDateCustomer : (state, action) => {
@@ -45,20 +45,39 @@ const brandSlice = createSlice({
         },
 
         setDataDates : (state, action) => {
-            state.date = action.payload;
+          state.date = action.payload;
         },
 
-        createNewTurn : (state, action) => {
-            postNewTrun(action.payload)
-            .then(res => {
-                // console.log(res.data.message)
-                res.status === 200 && alert(res.data.message, 'pronto te llegara una mail con todos los detalles')
-            })        
+        setAllState: (state) => {
+          state.car = null;
+          state.services = [];
+          state.servicesCount = 0;
+          state.customer = null;
+          state.date = null;
+          state.products = [];
+          state.status = 'idle';
+          state.response = null;
+          state.error = null;
         }
     },
+    extraReducers: (builder) => {
+        builder
+          .addCase(postNewTurn.pending, (state) => {
+            state.status = 'loading';
+          })
+          .addCase(postNewTurn.fulfilled, (state, action) => {
+            state.status = 'succeeded';
+            state.response = action.payload;
+          })
+          .addCase(postNewTurn.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error;
+          })
+    }
     
 });
 
-export const {setDatesCar, setProducts,setDatesServices,setDateCustomer, setDataDates, createNewTurn} = brandSlice.actions;
+export const {setDatesCar, setAllState, 
+  setProducts,setDatesServices,setDateCustomer, setDataDates} = brandSlice.actions;
 
 export default brandSlice.reducer

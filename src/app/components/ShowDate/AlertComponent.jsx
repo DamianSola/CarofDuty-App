@@ -1,16 +1,18 @@
+import { useSelector } from "react-redux";
 
 
-const AlertComponent = ({text, message,number}) => {
+const AlertComponent = ({number}) => {
 
-    
+    const {status, message} = useSelector((state) => state.data);
+    console.log(number)
 
     return(
         <div className="max-w-sm mx-auto mt-6">
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <strong className="font-bold">{text}</strong>
+                {/* <strong className="font-bold">{text}</strong> */}
                 <span className="block sm:inline">{message}</span>
-                <p>numero de turno: </p>
-                <strong>{number}</strong>
+                {/* <p>numero de turno: </p>
+                <strong>{number}</strong> */}
                 <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
                     <svg className="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <title>Cerrar</title>
@@ -22,4 +24,4 @@ const AlertComponent = ({text, message,number}) => {
     )
 }
 
-export default AlertComponent;
+// export default AlertComponent;
