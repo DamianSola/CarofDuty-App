@@ -5,7 +5,7 @@ import LogoBlanco from "./DutyShiftBlanco.png";
 
 const Footer = () => {
     return (
-      <footer className="bg-blue-800 text-white py-10">
+      <footer className="bg-sky-700 text-white py-10">
         <div className="container mx-auto px-4">
           {/* Contenedor principal */}
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
@@ -27,8 +27,8 @@ const Footer = () => {
             <div className="w-full md:w-1/3">
               
               <h2 className="text-lg font-bold mb-4">Contacto</h2>
-              <p>Teléfono: <a href="tel:+123456789" className="hover:underline">+123 456 789</a></p>
-              <p>Email: <a href="mailto:info@empresa.com" className="hover:underline">info@dutyshift.com</a></p>
+              {/* <p>Teléfono: <a href="whatsapp:+123456789" className="hover:underline">+123 456 789</a></p> */}
+              <p>Email: <a href="mailto:damiansola99@gmail.com" className="hover:underline">damiansola99@gmail.com</a></p>
               <p>Dirección: Ciudad de Salta, Argentina</p>
             </div>
   

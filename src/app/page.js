@@ -20,10 +20,10 @@ export default function Home() {
   }, [dispatch]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-white">
+    <main className="flex min-h-screen flex-col items-center bg-zinc-100">
       <NavBar/>
       <div className="z-10 w-full rounded-lg flex flex-col ">
-        <div className="md:flex block w-full  p-6 bg-slate-100 min-h-screen items-start">
+        <div className="md:flex block w-full  p-6 bg-zinc-100 md:min-h-screen items-start">
           <div className='p-4 block md:w-1/2'>
           <h1 className="text-4xl text-red-500 font-extrabold py-4">Car of Duty 
             <p className="text-lg text-gray-600 font-semibold">Servicio de autos</p>
@@ -44,22 +44,7 @@ export default function Home() {
           </div>
           <BrandHome brand={brands} />
         </div>
-
-       
         { steps &&  <StepsComponents open={steps}/>}
-        
-        
-        {/* <div className='flex w-full'>
-
-          <div className='w-full mt-4'>
-            {steps.step1 && <Step1 brand={brands} nextStep={() => setSteps({ ...steps, step1: false, step2: true })} />}
-            {steps.step2 && <Step2 nextStep={() => setSteps({ ...steps, step2: false, step3: true })} />}
-            {steps.step3 && <Step3 />}
-          </div>
-          <div className='w-full mt-4'>
-              <CurrentDates />
-            </div>
-        </div> */}
       </div>
   </main>
   

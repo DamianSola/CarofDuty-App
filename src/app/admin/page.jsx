@@ -22,14 +22,14 @@ const AdminDashboard = () => {
         return(
             <div className="bg-neutral-50 h-full m-auto p-8">
 
-                <div className="min-h-min p-6 bg-gray-100 justify-center ">
+                <div className="min-h-min p-6 bg-gray-100 justify-center md:text-left text-center">
                 {/* Título principal del Dashboard */}
                 <h1 className="bg-blue-600 text-white text-4xl font-bold py-4 px-6 rounded-lg shadow-lg text-center mb-10">
                     Admin Dashboard
                 </h1>
 
                 {/* Sección del título "Car of Duty" */}
-                <div className="flex ">
+                <div className="md:flex block">
                     <div className="text-center mb-8 m-auto">
                         <Image src={Logo} width="150" heigth="150" alt="logo-duty" className="m-auto"/>
                         <h1 className="text-4xl text-red-500 font-extrabold mb-2">Car of Duty</h1>
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
                 {/* Botón con estilo personalizado */}
                 <a 
                     href="#datos"
-                    className="inline-block text-xl font-medium text-blue-600 border border-blue-600 px-6 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out mb-8"
+                    className="inline-block text-xl font-medium text-blue-600 border border-blue-600 px-6 py-2 rounded-md hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out my-8"
                     >
                     Ver todos los datos
                 </a>
