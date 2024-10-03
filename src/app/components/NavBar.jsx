@@ -7,11 +7,11 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-sky-700 shadow-md w-full">
-      <div className="container mx-auto px-4 py-4 flex md:justify-between justify-center items-center text-center">
+    <nav className="absolute z-20 bg-gradient-to-r to-sky-500 from-blue-900 shadow-md w-full">
+      <div className="container mx-auto px-10 py-2 flex md:justify-between justify-center items-center text-center">
         <div className="flex flex-col text-white text-md px-6 items-center ">
-            <Image src={LogoBlanco} alt="logo-blanco" width="100" height="100"/>
-            <p className='text-zinc-100 font-bold'>Car of Duty</p>
+            <Image src={LogoBlanco} alt="logo-blanco" width="90" height="90"/>
+            <p className='text-sm text-zinc-100 font-bold'>Car of Duty</p>
             {/* <p className='text-zinc-100 font-bold'>Car Duty Shift</p> */}
         </div>
         {/* <div className="hidden md:flex space-x-6">

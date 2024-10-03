@@ -22,20 +22,20 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-zinc-100">
       <NavBar/>
-      <div className="z-10 w-full rounded-lg flex flex-col ">
-        <div className="md:flex block w-full  p-6 bg-zinc-100 md:min-h-screen items-start">
-          <div className='p-4 block md:w-1/2'>
+      <div className="z-10 w-full py-10 rounded-lg flex flex-col ">
+        <div className="md:flex block w-full px-10 bg-gradient-to-r from-white to-gray-800 md:min-h-screen items-center">
+          <div className='block md:w-1/2'>
           <h1 className="text-4xl text-red-500 font-extrabold py-4">Car of Duty 
             <p className="text-lg text-gray-600 font-semibold">Servicio de autos</p>
           </h1>
-          <p className="text-xl py-2">
+          <p className="text-md py-2">
             Bienvenido a Car of Duty, la plataforma que simplifica la gestión de servicios para tu auto. 
             Aquí puedes detallar y cotizar servicios según tu vehículo y reservar turnos en línea. 
             Nuestro objetivo es ofrecerte confianza y comodidad en cada trámite.
           </p>
           <h1 className="text-3xl font-bold text-left text-blue-600 my-4">¡Gestiona tu servicio ahora!</h1>
             <button
-              className={`bg-red-600 hover:bg-red-700 max-w-1/4 transition duration-300 py-2 px-4 text-white font-semibold rounded flex`}
+              className={`bg-red-600 hover:bg-red-700 max-w-1/4 transition duration-300 py-2 px-4 text-white font-semibold shadow rounded flex`}
               onClick={() => setSteps(true)}
               href='#steps'
               >

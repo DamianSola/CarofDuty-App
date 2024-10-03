@@ -96,13 +96,13 @@ const Step2 = ({sprint}) => {
     },[dispatch])
 
     return (
-        <div className="flex flex-col p-6 border-2 rounded-md border-gray-300 w-full  mx-auto my-8 bg-white shadow-lg">
+        <div className="flex flex-col p-6 border-2 mb-6 rounded-md border-gray-300 w-full  mx-auto bg-white shadow-lg">
             <Modal onClose={onClose} isOpen={open} catchProduct={catchProduct} product={product}/>
             <p className="text-blue-600 font-semibold mb-2 text-lg">Paso 2</p>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Elegir servicios</h2>
 
             <section className="w-full mb-4">
-                <label htmlFor="options" className="block text-left text-gray-700 font-medium mb-2">Servicio</label>
+                {/* <label htmlFor="options" className="block text-left text-gray-700 font-medium mb-2">Servicio</label> */}
                 <select
                     className="w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     id="options"
@@ -113,6 +113,12 @@ const Step2 = ({sprint}) => {
                     <option key={e._id} value={e._id}>{e.name}</option>
                     ))}
                 </select>
+            </section>
+
+            <section className='text-sm text-gray-600 font-semibold text-left'>
+            <p>Servicios: <strong>{services.length}</strong></p>
+            <p>Duracion total: <strong> {services.reduce((acc, service) => acc + service.duration, 0)} minutos</strong></p>
+            <p>Precio total: <strong> ${services.reduce((acc, service) => acc + parseFloat(service.price), 0)}</strong></p>
             </section>
 
             {/* Lista de servicios seleccionados */}
@@ -128,7 +134,7 @@ const Step2 = ({sprint}) => {
 
                           <div className="flex flex-col space-y-1">
                             <p className="text-gray-700">Producto:</p>
-                            <p className="font-semibold text-gray-800">{item.product.name}</p>
+                            <p className="text-sm font-semibold text-gray-800">{item.product.name}</p>
                             <p className="font-semibold text-gray-800">
                               ${parseFloat(item.product.price.$numberDecimal).toFixed(2)}
                             </p>
@@ -159,16 +165,7 @@ const Step2 = ({sprint}) => {
                 )}
               </div>
             </section>
-
-          
-
-          <section className='text-sm text-gray-600 font-semibold text-right py-4'>
-            <p>Servicios: <strong>{services.length}</strong></p>
-            <p>Duracion total: <strong> {services.reduce((acc, service) => acc + service.duration, 0)} minutos</strong></p>
-            <p>Precio total: <strong> ${services.reduce((acc, service) => acc + parseFloat(service.price), 0)}</strong></p>
-          </section>
-          
-
+      
             {/* Botón de siguiente */}
             <button
               className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
