@@ -20,8 +20,8 @@ const StepsComponents = ({open}) => {
     if(!open) return null;
 
     return(
-        <div className='flex p-10 md:flex-nowrap flex-wrap bg-white items-start' id='steps'>
-            <div className='w-full lg:w-1/2 px-6'>
+        <div className='flex sm:p-10 md:flex-nowrap flex-wrap bg-white items-start' id='steps'>
+            <div className='w-full lg:w-1/3 px-4'>
                 {stepSprint == 0 && <Intro step={SetStepSprint}/>}
                 {stepSprint == 1 && <Step1 brand={brands} sprint={SetStepSprint}/>}
                 {stepSprint == 2 && <Step2 sprint={SetStepSprint}/>}

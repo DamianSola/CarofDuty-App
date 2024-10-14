@@ -20,33 +20,48 @@ export default function Home() {
   }, [dispatch]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-zinc-100">
-      <NavBar/>
-      <div className="z-10 w-full py-10 rounded-lg flex flex-col ">
-        <div className="md:flex block w-full px-10 bg-gradient-to-r from-white to-gray-800 md:min-h-screen items-center">
-          <div className='block md:w-1/2'>
-          <h1 className="text-4xl text-red-500 font-extrabold py-4">Car of Duty 
-            <p className="text-lg text-gray-600 font-semibold">Servicio de autos</p>
-          </h1>
-          <p className="text-md py-2">
-            Bienvenido a Car of Duty, la plataforma que simplifica la gestión de servicios para tu auto. 
-            Aquí puedes detallar y cotizar servicios según tu vehículo y reservar turnos en línea. 
-            Nuestro objetivo es ofrecerte confianza y comodidad en cada trámite.
-          </p>
-          <h1 className="text-3xl font-bold text-left text-blue-600 my-4">¡Gestiona tu servicio ahora!</h1>
-            <button
-              className={`bg-red-600 hover:bg-red-700 max-w-1/4 transition duration-300 py-2 px-4 text-white font-semibold shadow rounded flex`}
-              onClick={() => setSteps(true)}
-              href='#steps'
-              >
-              Empezar
-            </button>
-          </div>
-          <BrandHome brand={brands} />
-        </div>
-        { steps &&  <StepsComponents open={steps}/>}
+    <main className="flex flex-col min-h-screen bg-zinc-100">
+  <NavBar />
+  <div className="w-full py-10 flex flex-col items-center">
+    <div className="flex flex-col md:flex-row w-full bg-gradient-to-r from-white to-gray-800 rounded-lg p-8 md:min-h-screen md:items-center md:justify-between">
+      
+      {/* Sección de texto y llamada a la acción */}
+      <div className="flex flex-col md:w-1/2 mb-6 md:mb-0">
+        <h1 className="text-4xl text-red-500 font-extrabold mb-4">
+          Car of Duty
+          <p className="text-lg text-gray-600 font-semibold">Servicio de autos</p>
+        </h1>
+
+        <p className="hidden md:block text-md text-gray-700 mb-4">
+          Bienvenido a Car of Duty, la plataforma que simplifica la gestión de servicios para tu auto. 
+          Aquí puedes detallar y cotizar servicios según tu vehículo y reservar turnos en línea. 
+          Nuestro objetivo es ofrecerte confianza y comodidad en cada trámite.
+        </p>
+
+        <h2 className="text-3xl font-bold text-blue-600 mb-4">
+          ¡Gestiona tu servicio ahora!
+        </h2>
+
+        <button
+          className="bg-red-600 hover:bg-red-700 transition duration-300 py-2 px-6 text-white font-semibold shadow rounded-lg self-start"
+          onClick={() => setSteps(true)}
+          href='#steps'
+        >
+          Empezar
+        </button>
       </div>
-  </main>
+
+      {/* Sección de marcas */}
+      <div className="md:w-1/2 flex justify-center md:justify-end">
+        <BrandHome brand={brands} />
+      </div>
+    </div>
+
+    {/* Componente de pasos (condicional) */}
+    {steps && <StepsComponents open={steps} />}
+  </div>
+</main>
+
   
   );
 }

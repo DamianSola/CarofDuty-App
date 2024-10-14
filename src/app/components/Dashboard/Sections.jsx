@@ -21,9 +21,9 @@ const DashSection = ({title, date}) => {
 
     return(
         <section className="font-semibold rounded-md my-2 p-2 w-auto flex-col bg-white shadow-md hover:bg-gray-100 transition-colors">
-            <div className='flex justify-between items-center py-4 '>
+            <div className='block justify-between items-center py-4 '>
             
-                <h1 className='px-2 semibold w-auto text-lg text-gray-700 hover:text-blue-600 transition-colors'>{title.toUpperCase()}</h1>
+                <h1  className="text-xl font-bold mb-4">{title}</h1>
                 <aside className='flex items-center'>
                     {/* <p className='px-2 mx-2 text-sm'>{date.count} datos</p> */}
                     <button className='simple-button' 
@@ -39,17 +39,17 @@ const DashSection = ({title, date}) => {
               
             </div>
             {
-                title == 'autos' ? add && <AddCar open={add} brand={date}/> :
-                title == 'marcas' ? add && <AddBrand open={add}/> : 
-                title == 'servicios' ? add && <div>No disponible</div> : 
-                title == 'productos'? add && <AddProduct apen={add}/> : null
+                title == 'Autos' ? add && <AddCar open={add} brand={date}/> :
+                title == 'Marcas' ? add && <AddBrand open={add}/> : 
+                title == 'Servicios' ? add && <div>No disponible</div> : 
+                title == 'Productos'? add && <AddProduct apen={add}/> : null
             }
             {
-                title == 'autos' ? see && <ShowCars brand={date}/> :
-                title == 'marcas' ? see && <BrandHome brand={date}/> :
-                title == 'servicios' ? see && <ShowService/> :
-                title == 'productos'? see && <ShowProducts/> :
-                title == 'turnos' ? see && <ShowTurns/> : null
+                title == 'Autos' ? see && <ShowCars brand={date} close={() => setSee(false)}/> :
+                title == 'Marcas' ? see && <BrandHome brand={date} close={() => setSee(false)}/> :
+                title == 'Servicios' ? see && <ShowService close={() => setSee(false)}/> :
+                title == 'Productos'? see && <ShowProducts close={() => setSee(false)}/> :
+                title == 'Turnos' ? see && <ShowTurns/> : null
             }
         </section>
     )

@@ -3,10 +3,10 @@ import Image from "next/image";
 
 const BrandHome = ({brand}) => {
     return (
-       <div className="hidden md:flex md:flex-wrap md:w-1/2 justify-center gap-4 p-2">
+       <div className="flex flex-wrap w-full md:w-1/2 justify-center gap-4 p-2">
           {brand.brands ? (
               brand.brands.map((b, index) => (
-              <div className='flex flex-col items-center p-2 rounded-lg bg-gray-200 shadow-lg transition-transform duration-300 hover:scale-105'
+              <div className='flex flex-col items-center p-2 w-1/5 rounded-lg bg-gray-200 shadow-lg transition-transform duration-300 hover:scale-105'
               key={index}>
               <img 
               src={b.image}
