@@ -17,9 +17,9 @@ const Footer = () => {
               <h2 className="text-lg font-bold mb-4">Enlaces útiles</h2>
               <ul className="space-y-2">
                 <li><a href="/home" className="hover:underline">Inicio</a></li>
-                <li><a href="/productos" className="hover:underline">Productos</a></li>
+                {/* <li><a href="/productos" className="hover:underline">Productos</a></li> */}
                 <li><a href="/contacto" className="hover:underline">Contacto</a></li>
-                <li><a href="/acerca" className="hover:underline">Acerca de nosotros</a></li>
+                {/* <li><a href="/acerca" className="hover:underline">Acerca de nosotros</a></li> */}
               </ul>
             </div>
   

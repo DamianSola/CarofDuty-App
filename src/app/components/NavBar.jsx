@@ -22,8 +22,8 @@ const NavBar = () => {
     {/* Menú para pantallas grandes */}
     <div className="hidden md:flex space-x-6 text-white">
       <a href="/" className="hover:text-gray-300">Inicio</a>
-      <a href="/mis-turnos" className="hover:text-gray-300">Mis Turnos</a>
-      <a href="/products" className="hover:text-gray-300">Productos</a>
+      {/* <a href="/mis-turnos" className="hover:text-gray-300">Mis Turnos</a>
+      <a href="/products" className="hover:text-gray-300">Productos</a> */}
     </div>
 
     {/* Botón de menú móvil */}
@@ -38,8 +38,8 @@ const NavBar = () => {
   {isOpen && (
     <div className="md:hidden bg-blue-900 text-white flex flex-col space-y-2 py-4 px-6">
       <a href="/" className="hover:text-gray-300">Inicio</a>
-      <a href="/mis-turnos" className="hover:text-gray-300">Mis Turnos</a>
-      <a href="/products" className="hover:text-gray-300">Productos</a>
+      {/* <a href="/mis-turnos" className="hover:text-gray-300">Mis Turnos</a>
+      <a href="/products" className="hover:text-gray-300">Productos</a> */}
     </div>
   )}
 </nav>
