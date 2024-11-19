@@ -6,7 +6,7 @@ const Ready = ({step}) => {
         step(1)
     }
     return(
-    <div className="p-6 min-h-svh items-center text-center">
+    <div className="p-6 h-fit items-center text-center">
 
         <h1 className="text-2xl text-gray-700 text-bold p-4">Listo!</h1>
         <img className="m-auto"

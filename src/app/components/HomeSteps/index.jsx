@@ -6,22 +6,26 @@ import Step4 from './../Steps/Calendar'
 import CurrentDates from './../ShowDate/CurrentDates';
 import Intro from './intro'
 import Ready from './Ready'
+import { getAllBrandCars } from "../../../redux/Slices/brandSlice";
+import { useState, useEffect } from "react";
+import { useSelector,useDispatch } from 'react-redux'
 
-import { useState } from 'react';
-import { useSelector } from 'react-redux'
-
-const StepsComponents = ({open}) => {
+const StepsComponents = () => {
 
     const [stepSprint , SetStepSprint] = useState(0)
 
     const { brands, status, error } = useSelector((state) => state.brand);
 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getAllBrandCars());
+      }, [dispatch]);
 
-    if(!open) return null;
 
     return(
-        <div className='flex sm:p-10 md:flex-nowrap flex-wrap bg-white items-start' id='steps'>
-            <div className='w-full lg:w-1/3 px-4'>
+        <div className='flex sm:px-10 pt-20 max-w-6xl m-auto items-top md:flex-nowrap md:space-x-10 justify-between flex-wrap bg-gray-100 h-fit' 
+            id='steps'>
+            <div className='w-full lg:w-1/2 px-10 h-fit'>
                 {stepSprint == 0 && <Intro step={SetStepSprint}/>}
                 {stepSprint == 1 && <Step1 brand={brands} sprint={SetStepSprint}/>}
                 {stepSprint == 2 && <Step2 sprint={SetStepSprint}/>}

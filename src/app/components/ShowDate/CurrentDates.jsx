@@ -62,16 +62,16 @@ const CurrentDates = () => {
     },[date])
 
     return(
-        <div className="flex flex-col p-4 bg-zinc-100 border-2 border-gray-300 rounded-lg shadow-xl text-center mx-auto w-full md:w-2/3">
-            <h1 className="text-3xl py-4 font-extrabold text-gray-800">Datos Agregados</h1>
+        <div className="flex flex-col p-4 bg-zinc-100 border-2 border-gray-300 rounded-lg shadow-xl text-center mx-auto w-full md:max-w-xl">
+            <h1 className="text-xl py-4 font-extrabold text-gray-800">Datos Agregados</h1>
     
             {showButton && <AddTurnButton show={showButton} handleSubmitTrun={handleSubmitTrun} />}
 
-            <div className="flex flex-wrap justify-around md:max-h-screen md:overflow-y-auto gap-6 my-6">
+            <div className="flex flex-wrap gap-6 my-2">
                 <ModalDates onClose={() => setOpen(false)} isOpen={open} status={status} response={response} />
 
                 {car ? (
-                    <section className="flex flex-col text-left space-y-4 p-4 bg-white shadow-lg border-gray-200 rounded-lg w-full">
+                    <section className="flex flex-col md:flex-grow text-left space-y-2 p-4 bg-white shadow-lg border-gray-200 rounded-lg w-full">
                         <p className="text-lg font-bold text-gray-800 border-b border-gray-300 pb-3">VEHÍCULO</p>
 
                         <div className="flex items-center space-x-4">
@@ -92,39 +92,12 @@ const CurrentDates = () => {
                         </div>
                     </section>
                     ) : (
-                    <p className="text-lg text-red-500">No hay auto agregado</p>
+                    <p className="text-base font-semibold text-red-500">No hay auto agregado</p>
                 )}
 
-                <section className="bg-white p-6 border-gray-200 rounded-lg shadow-lg w-full">
-                    <p className="text-lg font-bold text-gray-800 border-b border-gray-300 pb-3">DATOS DEL CLIENTE</p>
-                    {customer && (
-                        <div className="space-y-4">
-                            <div>
-                                <h3 className="text-sm text-blue-700">Nombre y Apellido</h3>
-                                <p className="text-lg font-semibold text-gray-900">{customer.name}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-sm text-blue-700">e-mail</h3>
-                                <p className="text-lg font-semibold text-gray-900">{customer.email}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-sm text-blue-700">Teléfono</h3>
-                                <p className="text-lg font-semibold text-gray-900">{customer.phone}</p>
-                            </div>
-                        </div>
-                    )}
-                </section>
-
-                <section className="bg-white p-6 rounded-lg shadow-lg w-full">
-                    <p className="text-lg font-bold text-gray-800 border-b border-gray-300 pb-3">FECHA Y HORA</p>
-                    <div className="flex flex-col text-blue-700">
-                        <p className="text-md">{dataTime.day}</p>
-                        <p className="text-lg">{dataTime.time && `${dataTime.time} hs`}</p>
-                    </div>
-                </section>
-
+                
         <section className="bg-white p-6 rounded-lg shadow-lg w-full">
-            <p className="text-lg font-bold text-gray-800 border-b border-gray-300 pb-3">SERVICIOS</p>
+            <p className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-3">SERVICIOS</p>
             <div className="md:flex md:flex-wrap block gap-4">
                 {services.length === 0 ? (
                     <p className="text-gray-500 w-full">Vacío</p>
@@ -159,6 +132,33 @@ const CurrentDates = () => {
                 )}
             </div>
         </section>
+        <section className="bg-white p-6 border-gray-200 rounded-lg shadow-lg w-full">
+                    <p className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-3">DATOS DEL CLIENTE</p>
+                    {customer && (
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="text-sm text-blue-700">Nombre y Apellido</h3>
+                                <p className="text-lg font-semibold text-gray-900">{customer.name}</p>
+                            </div>
+                            <div>
+                                <h3 className="text-sm text-blue-700">e-mail</h3>
+                                <p className="text-lg font-semibold text-gray-900">{customer.email}</p>
+                            </div>
+                            <div>
+                                <h3 className="text-sm text-blue-700">Teléfono</h3>
+                                <p className="text-lg font-semibold text-gray-900">{customer.phone}</p>
+                            </div>
+                        </div>
+                    )}
+                </section>
+
+                <section className="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <p className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-3">FECHA Y HORA</p>
+                    <div className="flex flex-col text-blue-700">
+                        <p className="text-md">{dataTime.day}</p>
+                        <p className="text-lg">{dataTime.time && `${dataTime.time} hs`}</p>
+                    </div>
+                </section>
     </div>
 
     <AddTurnButton show={showButton} handleSubmitTrun={handleSubmitTrun} />
