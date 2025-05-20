@@ -71,7 +71,7 @@ const ShowTurns = () => {
 
                 <Pagination itemsPerPage={itemsPerPage} totalItems={turns.length} paginate={paginate}/>
 
-                <div className="flex flex-row p-4 mb-2 bg-white rounded-lg shadow-md text-left">
+                <div className="flex flex-row p-4 mb-2 bg-blue-200 rounded-lg shadow-md text-left">
                     <aside className="flex-1 font-bold text-lg text-gray-600 md:mb-0 max-w-40 px-2">Número
                         <input
                         type="text"

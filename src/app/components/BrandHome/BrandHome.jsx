@@ -2,6 +2,7 @@ import Logo from "./logoBlue.png";
 import Image from "next/image";
 
 const BrandHome = ({brand}) => {
+  
     return (
        <div className="flex flex-wrap w-full justify-center gap-4 p-2">
           {brand.brands ? (
@@ -18,15 +19,23 @@ const BrandHome = ({brand}) => {
       </div>
     ))
   ) : (
-    <div className="flex flex-col items-center justify-start h-screen w-full text-center">
+    <div className="flex flex-col w-full text-center h-dvw p-4 rounded-lg">
       <Image 
         width='300' 
         height='300' 
-        className="mb-4" 
+        className=" rounded-lg justify-center m-auto " 
         src={Logo}
         alt="Loading animation"
       />
-      <h2 className="text-lg font-semibold text-gray-700">CARGANDO DATOS...</h2>
+      <div className="w-full max-w-xs mx-auto">
+  <h2 className="mb-2 text-lg font-semibold text-gray-700">CARGANDO DATOS...</h2>
+  <div className="w-full bg-gray-200 rounded-full h-2.5">
+    <div 
+      className="bg-blue-600 h-2.5 rounded-full animate-progress" 
+      style={{ width: '45%' }}
+    ></div>
+  </div>
+</div>
     </div>
   )}
 </div>

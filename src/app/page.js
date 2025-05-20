@@ -29,11 +29,11 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-zinc-100">
   <NavBar />
-  <div className="w-full pt-10 flex flex-col items-center">
-    <div className="flex flex-col w-full bg-blue-950 rounded-lg p-8 md:min-h-screen md:items-center md:justify-between">
+  <div className="w-full flex flex-col items-center ">
+    <div className="flex flex-col md:flex-row w-full bg-blue-950  p-8 h-screen md:items-center md:justify-between">
       
       {/* Sección de texto y llamada a la acción */}
-      <div className="flex flex-col text-center w-full mb-6  space-y-6">
+      <div className="flex flex-col text-center md:text-left w-full mb-6  space-y-6">
         <h1 className="text-4xl text-red-600 font-extrabold mb-4">
           Car of Duty
           <p className="text-lg text-gray-300 font-semibold">Servicio de autos</p>
@@ -45,15 +45,17 @@ export default function Home() {
           Nuestro objetivo es ofrecerte confianza y comodidad en cada trámite.
         </p>
 
+     
+
         <h2 className="text-3xl font-bold text-white mb-4">
           ¡Gestiona tu servicio ahora!
         </h2>
 
         <button
-          className="bg-red-600 hover:bg-red-700 transition duration-300 m-auto py-2 px-6 text-white font-semibold shadow rounded-lg self-start"
+          className="bg-red-600 w-1/3 hover:bg-red-700 transition duration-300 m-auto md:m-2 py-2 px-6 text-white font-semibold shadow rounded-lg self-start"
           onClick={clickMange}
           href='#steps'
-        >
+          >
           Empezar
         </button>
       </div>

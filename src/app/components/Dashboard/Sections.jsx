@@ -10,14 +10,20 @@ import ShowProducts from './../admin/ShowProducts'
 import ShowService from './../admin/ShowServices'
 import ShowTurns from '../admin/Showturns';
 import BrandHome from '../BrandHome/BrandHome';
-
+import { useRouter } from "next/navigation";
 
 
 const DashSection = ({title, date}) => {
 
     const [add, setAdd] = useState(false)
     const [see, setSee] = useState(false)
+    const router = useRouter();
     // console.log(date)
+
+    const goToTurnos = (route) => {
+        router.push("/admin/"+route); // Redirige a /admin/turnos
+      };
+    
 
     return(
         <section className="font-semibold rounded-md my-2 p-2 w-auto flex-col bg-white shadow-md hover:bg-gray-100 transition-colors">
@@ -30,11 +36,11 @@ const DashSection = ({title, date}) => {
                         onClick={() => setSee(!see) + setAdd(false)}>
                         {see ? "ocultar" : "ver"}
                     </button>
-                    {title !== 'turnos' &&
+                    {/* {title !== 'turnos' &&
                     <button className='simple-button' 
                         onClick={() => setAdd(!add) + setSee(false)}>
                         {add ? "ocultar" : "agregar"}
-                    </button>}
+                    </button>} */}
                 </aside>
               
             </div>
