@@ -23,9 +23,9 @@ const StepsComponents = () => {
 
 
     return(
-        <div className='flex sm:px-10 pt-20 max-w-6xl m-auto items-top md:flex-nowrap md:space-x-10 justify-between flex-wrap bg-gray-100 h-fit' 
+        <div className='flex sm:px-10 pt-6 md:pt-20 max-w-6xl m-auto items-top md:flex-nowrap md:space-x-10 justify-between flex-wrap bg-gray-100 h-fit' 
             id='steps'>
-            <div className='w-full lg:w-1/2 px-10 h-fit'>
+            <div className='w-full lg:w-1/2 px-2 md:px-10 h-fit items-center'>
                 {stepSprint == 0 && <Intro step={SetStepSprint}/>}
                 {stepSprint == 1 && <Step1 brand={brands} sprint={SetStepSprint}/>}
                 {stepSprint == 2 && <Step2 sprint={SetStepSprint}/>}

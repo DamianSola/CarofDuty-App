@@ -74,22 +74,26 @@ const CurrentDates = () => {
                     <section className="flex flex-col md:flex-grow text-left space-y-2 p-4 bg-white shadow-lg border-gray-200 rounded-lg w-full">
                         <p className="text-lg font-bold text-gray-800 border-b border-gray-300 pb-3">VEHÍCULO</p>
 
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
                             <img 
                             src={car.brand.image} 
                             width="70" 
                             alt={`${car.brand.name} logo`} 
                             className="rounded-full border border-gray-200 p-1 shadow-sm"/>
+                            {/* <label>modelo:</label> */}
                             <p className="text-xl text-red-600 font-bold">{car.name.toUpperCase()}</p>
+                             <p className="text-lg font-semibold text-gray-600">{car.type}</p>
+                              <p className="text-lg font-semibold text-gray-600">{car.motor}.</p>
                         </div>
 
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
+                            <label>tipo: </label>
                             <p className="text-lg font-semibold text-blue-700">{car.type}</p>
                         </div>
 
                         <div className="flex items-center">
                             <p className="text-lg font-semibold text-blue-700">{car.motor}</p>
-                        </div>
+                        </div> */}
                     </section>
                     ) : (
                     <p className="text-base font-semibold text-red-500">No hay auto agregado</p>

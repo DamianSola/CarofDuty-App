@@ -96,7 +96,7 @@ const Step2 = ({sprint}) => {
     },[dispatch])
 
     return (
-        <div className="flex flex-col p-6 border-2 mb-6 rounded-md border-gray-300 w-full  mx-auto bg-white shadow-lg">
+        <div className="flex flex-col p-4 border-2 mb-6 rounded-md border-gray-300 w-full  mx-auto bg-white shadow-lg">
             <Modal onClose={onClose} isOpen={open} catchProduct={catchProduct} product={product}/>
             <p className="text-blue-600 font-semibold mb-2 text-lg">Paso 2</p>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Elegir servicios</h2>
