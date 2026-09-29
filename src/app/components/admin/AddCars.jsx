@@ -1,118 +1,85 @@
-import {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {addNewCar} from './../../../redux/Slices/carsSlice'
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewCar } from "./../../../redux/Slices/carsSlice";
+import { Input, Select, Label, Button, Alert } from "../ui";
 
-const AddCar = ({open, brand}) => {
+const AddCar = ({ open, brand }) => {
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.car);
 
-    const dispatch = useDispatch()
-    const {status} = useSelector(state => state.car)
+  const [input, setInput] = useState({});
+  const [seeBrand, setSeeBrand] = useState(null);
+  const [error, setError] = useState(null);
 
-    const [input, setInput] = useState({})
-    const [seeBrand, setSeeBrand] = useState(null)
-    const [error, setError] = useState(null)
+  const handleChange = (e) => {
+    let { name, value } = e.target;
 
-    const handleChange = (e) => {
-        let {name, value} = e.target;
+    setInput({ ...input, [name]: value });
 
-        setInput({...input, [name]:value })
-
-        if(name === 'brand'){
-           let show = brand.brands.find(e => e._id === value)
-           setSeeBrand(show.name)
-           setError(null)
-        }
-       
+    if (name === "brand") {
+      let show = brand.brands.find((e) => e._id === value);
+      setSeeBrand(show.name);
+      setError(null);
     }
+  };
 
-    const HandleSubmit = (e) => {
-        e.preventDefault()
-        if(!input.brand) return setError('seleccionar marca')
-        
-        dispatch(addNewCar(input))
-        setInput({})
-    }
- 
+  const HandleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.brand) return setError("seleccionar marca");
 
-    return(
-        <div className='p-6 bg-white rounded-lg shadow-md max-w-96 m-auto'>
-        {/* Marca seleccionada */}
-            <span className='block text-lg text-blue-600 font-medium mb-4'>
-            {seeBrand && seeBrand}
-            </span>
-      
-        {/* Formulario */}
-            <form onSubmit={HandleSubmit} className='space-y-4' onChange={(e) => handleChange(e)}>
-            
-            {/* Nombre */}
-                <div>
-                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Nombre</label>
-                    <input 
-                    type="text" 
-                    name="name" 
-                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
-                    required
-                    />
-                </div>
-        
-            {/* Tipo de auto */}
-                <div>
-                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Tipo de auto</label>
-                    <select 
-                    name="type"  
-                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
-                    onChange={(e) => handleChange(e)} 
-                    required
-                    >
-                    <option value={null}>--- Seleccionar ---</option>
-                    <option value="auto">Auto</option>
-                    <option value="camioneta">Camioneta</option>
-                    </select>
-                </div>
-        
-            {/* Motor */}
-                <div>
-                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Motor</label>
-                    <input 
-                    type="text" 
-                    name="motor" 
-                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
-                    required
-                    />
-                </div>
-        
-            {/* Marca */}
-                <div>
-                    <label className='block text-sm font-semibold text-gray-700 mb-1'>Marca</label>
-                    <select 
-                    id="options" 
-                    name="brand"  
-                    className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' 
-                    onChange={(e) => handleChange(e)} 
-                    required
-                    >
-                    <option value={null}>--- Seleccionar ---</option>
-                    {brand.brands && brand.brands.map((marca, index) => (
-                        <option value={marca._id} key={index}>{marca.name}</option>
-                    ))}
-                    </select>
-                </div>
-        
-            {/* Error Message */}
-                {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
-        
-            {/* Botón */}
-                <div className='flex justify-center'>
-                    <button 
-                    type='submit' 
-                    className='px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300'
-                    >
-                    Agregar Auto
-                    </button>
-                </div>
-            </form>
+    dispatch(addNewCar(input));
+    setInput({});
+  };
+
+  return (
+    <div className="m-auto max-w-96 rounded-md bg-surface p-6 shadow-sm">
+      <span className="mb-4 block text-lg font-medium text-heading">{seeBrand && seeBrand}</span>
+
+      <form onSubmit={HandleSubmit} className="space-y-4" onChange={(e) => handleChange(e)}>
+        <div>
+          <Label htmlFor="car-name">Nombre</Label>
+          <Input id="car-name" type="text" name="name" required />
         </div>
-      
-    )
-}
+
+        <div>
+          <Label htmlFor="car-type">Tipo de auto</Label>
+          <Select id="car-type" name="type" onChange={(e) => handleChange(e)} required>
+            <option value={null}>--- Seleccionar ---</option>
+            <option value="auto">Auto</option>
+            <option value="camioneta">Camioneta</option>
+          </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="car-motor">Motor</Label>
+          <Input id="car-motor" type="text" name="motor" required />
+        </div>
+
+        <div>
+          <Label htmlFor="car-brand">Marca</Label>
+          <Select id="car-brand" name="brand" onChange={(e) => handleChange(e)} required>
+            <option value={null}>--- Seleccionar ---</option>
+            {brand.brands &&
+              brand.brands.map((marca, index) => (
+                <option value={marca._id} key={index}>
+                  {marca.name}
+                </option>
+              ))}
+          </Select>
+        </div>
+
+        {error && (
+          <Alert variant="danger" role="alert">
+            {error}
+          </Alert>
+        )}
+
+        <div className="flex justify-center">
+          <Button type="submit">Agregar auto</Button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default AddCar;

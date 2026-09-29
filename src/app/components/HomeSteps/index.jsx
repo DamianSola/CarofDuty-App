@@ -8,28 +8,27 @@ import Intro from './intro'
 import Ready from './Ready'
 import { getAllBrandCars } from "../../../redux/Slices/brandSlice";
 import { useState, useEffect } from "react";
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import ProgressSteps from '../ui/ProgressSteps'
 
 const StepsComponents = () => {
-
     const [stepSprint , SetStepSprint] = useState(0)
-
-    const { brands, status, error } = useSelector((state) => state.brand);
-
+    const { brands } = useSelector((state) => state.brand);
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getAllBrandCars());
       }, [dispatch]);
 
-
     return(
-        <div className='flex sm:px-10 pt-6 md:pt-20 max-w-6xl m-auto items-top md:flex-nowrap md:space-x-10 justify-between flex-wrap bg-gray-100 h-fit' 
+        <div className='m-auto flex min-h-[calc(100vh-72px)] max-w-7xl flex-wrap items-start justify-between bg-body px-4 py-8 sm:px-8 md:py-16 lg:flex-nowrap lg:gap-10 lg:px-10'
             id='steps'>
-            <div className='w-full lg:w-1/2 px-2 md:px-10 h-fit items-center'>
+            <div className='h-fit w-full items-center px-0 sm:px-4 lg:w-1/2'>
+                {stepSprint > 0 && stepSprint < 5 ? <ProgressSteps current={stepSprint} /> : null}
                 {stepSprint == 0 && <Intro step={SetStepSprint}/>}
                 {stepSprint == 1 && <Step1 brand={brands} sprint={SetStepSprint}/>}
                 {stepSprint == 2 && <Step2 sprint={SetStepSprint}/>}
-                {stepSprint == 3 && <Step3 sprint={SetStepSprint}/>} 
+                {stepSprint == 3 && <Step3 sprint={SetStepSprint}/>}
                 {stepSprint == 4 &&  <Step4 sprint={SetStepSprint}/>}
                 {stepSprint == 5 && <Ready step={SetStepSprint}/>}
             </div>
@@ -38,4 +37,4 @@ const StepsComponents = () => {
     )
 }
 
-export default StepsComponents;
+export default StepsComponents

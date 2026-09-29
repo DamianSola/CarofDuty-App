@@ -1,22 +1,24 @@
 'use client'
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import { useDispatch } from "react-redux";
 import {setDateCustomer} from "./../../../redux/Slices/datesSlices"
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import Label from "../ui/Label";
+import Card from "../ui/Card";
+import Alert from "../ui/Alert";
 
 const Step3 = ({sprint}) => {
-
     const dispatch = useDispatch()
-
     const [input, setInput] = useState({
         name: "", email:"" , phone:""
     })
-
     const [error, setError] = useState('');
 
     const validateEmail = (value) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) {
-        setError('Please enter a valid email address');
+        setError('Ingresá un correo electrónico válido');
       } else {
         setError(null);
       }
@@ -25,7 +27,6 @@ const Step3 = ({sprint}) => {
     const handleChange = (e) => {
         let {name, value} = e.target
         if(name === 'email') validateEmail(value)
-
         setInput({
             ...input,
             [name]: value
@@ -39,46 +40,37 @@ const Step3 = ({sprint}) => {
         sprint(4)
     }
 
-
     return (
-        <div className="flex flex-col p-6 bg-white shadow-lg rounded-lg border-2 border-gray-200 mb-6 mx-auto">
-        <p className="text-lg font-semibold text-blue-600">Paso 3</p>
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Ingresa tus datos</h2>
-        
-      
+        <Card className="mx-auto mb-6 flex flex-col p-5 sm:p-7">
+        <p className="text-lg font-semibold text-accent">Paso 3</p>
+        <h2 className="mb-6 text-2xl font-bold sm:text-3xl">Ingresá tus datos</h2>
+
         <form onSubmit={handleSubmit} onChange={handleChange}>
-
-            <section className="w-full mb-4">
-                <label className="flex text-gray-600 font-medium mb-2">Nombre y Apellido<p className="text-red-600">*</p></label>
-                    <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                    type="text" name='name'/>
+            <section className="mb-4 w-full">
+                <Label htmlFor="customer-name" required>Nombre y apellido</Label>
+                    <Input id="customer-name" type="text" name='name'/>
             </section>
-      
-            <section className="w-full mb-4">
-                <label className="flex text-gray-600 font-medium mb-2">e-mail<p className="text-red-600">*</p></label>
-                    <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                    type="email" 
+
+            <section className="mb-4 w-full">
+                <Label htmlFor="customer-email" required>Correo electrónico</Label>
+                    <Input
+                    id="customer-email"
+                    type="email"
                     name='email'
-                    required 
+                    required
                     />
-                    {error && <p className="text-red-500">{error}</p>}
+                    {error && <Alert variant="danger" role="alert" className="mt-2">{error}</Alert>}
             </section>
 
-            <section className="w-full mb-4">
-                <label className="flex text-gray-600 font-medium mb-2">telefono</label>
-                    <input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                    type="text" name='phone'/>
+            <section className="mb-4 w-full">
+                <Label htmlFor="customer-phone">Teléfono</Label>
+                    <Input id="customer-phone" type="text" name='phone'/>
             </section>
-                <button
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-700 transition-colors"
-                    type="submit"
-                >
+                <Button className="w-full" type="submit">
                     Siguiente
-                </button>
+                </Button>
         </form>
-       
-    </div>
-      
+    </Card>
     )
 }
 

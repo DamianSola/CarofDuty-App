@@ -1,23 +1,25 @@
+import { CircleCheck } from "lucide-react";
+import Button from "../ui/Button";
+import Card from "../ui/Card";
 
+const Ready = ({ step }) => {
+  const handleSubmit = () => {
+    step(1);
+  };
 
-const Ready = ({step}) => {
-
-    const handleSubmit = () => {
-        step(1)
-    }
-    return(
-    <div className="p-6 h-fit items-center text-center">
-
-        <h1 className="text-2xl text-gray-700 text-bold p-4">Listo!</h1>
-        <img className="m-auto"
-        src="https://cdn.icon-icons.com/icons2/1506/PNG/512/emblemok_103757.png" alt="ok" width='80'/>
-        <p className="p-6">Podes cheackear los datos a tu derecha. Si todo esta bien, hacé click en <strong>sacar turno</strong></p>
-        <button  className="w-1/3 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
-            onClick={handleSubmit}
-        >
-            Revisar
-        </button>
-    </div>)
-}
+  return (
+    <Card className="h-fit p-6 text-center sm:p-10">
+      <h1 className="p-4 text-2xl font-bold">Listo</h1>
+      <CircleCheck className="mx-auto h-16 w-16 text-success" aria-hidden="true" />
+      <p className="p-6 text-ink">
+        Podés revisar los datos en el resumen. Si está todo bien, hacé click en{" "}
+        <strong>Sacar turno</strong>.
+      </p>
+      <Button className="w-full sm:w-1/3" onClick={handleSubmit}>
+        Revisar
+      </Button>
+    </Card>
+  );
+};
 
 export default Ready;

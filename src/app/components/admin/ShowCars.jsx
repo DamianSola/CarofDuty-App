@@ -1,69 +1,69 @@
-'use client'
-import {useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {getAllCars, filterByBrand} from './../../../redux/Slices/carsSlice'
+"use client";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCars, filterByBrand } from "./../../../redux/Slices/carsSlice";
+import { Modal, Select, Label, EmptyState } from "../ui";
 
-const ShowCars = ({brand, close}) => {
+const ShowCars = ({ brand, close }) => {
+  const dispatch = useDispatch();
+  const { cars } = useSelector((state) => state.car);
 
-    const dispatch = useDispatch()
-    const {cars} = useSelector(state => state.car)
+  const handleChange = (e) => {
+    let { value } = e.target;
+    value && dispatch(filterByBrand(value));
+  };
 
-    // console.log(cars)
-    const handleChange = (e) => {
-        let {value} = e.target
-        value && dispatch(filterByBrand(value))
-    
-    }
+  useEffect(() => {
+    dispatch(getAllCars());
+  }, [dispatch]);
 
-    useEffect(()=>{
-        dispatch(getAllCars())
-        // filterByBrand()
-    },[dispatch])
+  return (
+    <Modal isOpen onClose={close} title="Autos" className="max-w-2xl">
+      <div className="mb-4">
+        <Label htmlFor="filter-brand">Filtrar por marca</Label>
+        <Select id="filter-brand" name="brand" onChange={(e) => handleChange(e)}>
+          <option value="all">Todos</option>
+          {brand.brands &&
+            brand.brands.map((b, index) => (
+              <option value={b._id} key={index}>
+                {b.name}
+              </option>
+            ))}
+        </Select>
+      </div>
 
-
-    return(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 py-20">
-            <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg h-full overflow-y-auto">
-                <span onClick={close}>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                </span>
-                <ul className='table-list  '>
-                    <li className='flex flex-col table-header items-center'>
-                       
-                        <aside className='flex p-2 text-blue-900'>
-                            <select
-                                className='select-admin'
-                                id="options" name="brand"  onChange={(e) => handleChange(e)}>
-                                <option value="all">Todos</option>
-                                {   brand.brands && brand.brands.map((b,index) => {
-                                        return <option value={b._id} key={index}>{b.name}
-                                </option>
-                                })}
-                            </select>
-                            <p className='px-2'>filtrar por marca</p>
-                        </aside>
-                        <div className='flex flex-row text-left'>
-                            <span className='w-1/2 mx-4'>nombre</span>
-                            <span className='w-1/2 mx-4'>motor</span>
-                        </div>
-                    </li>
-                    {cars.length !== 0 ? cars.map(car => {
-                        return <li key={car._id} className='table-row'>
-                            <span className='col'>{car.name}</span> 
-                            <span className='col'>{car.model}</span>
-                            <span className='col'>{car.motor}</span>
-                        {/* <button className='text-red-500 bg-grey px-2 mx-2 '>eliminar</button>
-                        <button  className='text-blue-500 bg-grey px-2 mx-2 '>actualizar</button> */}
-                        </li>
-                 }): <li className='table-row'><span className='col'>No hay autos de esta marca</span></li>
-                }
-                </ul>
-            </div>
-        </div>
-    )
-}
-
-
-
+      <ul className="space-y-2">
+        <li className="hidden border-b border-border pb-2 text-sm font-semibold text-muted sm:grid sm:grid-cols-3">
+          <span>Nombre</span>
+          <span>Modelo</span>
+          <span>Motor</span>
+        </li>
+        {cars.length !== 0 ? (
+          cars.map((car) => (
+            <li
+              key={car._id}
+              className="grid gap-1 rounded-sm border border-border bg-body p-3 sm:grid-cols-3"
+            >
+              <span>
+                <span className="mr-2 text-xs font-semibold text-muted sm:hidden">Nombre</span>
+                {car.name}
+              </span>
+              <span>
+                <span className="mr-2 text-xs font-semibold text-muted sm:hidden">Modelo</span>
+                {car.model}
+              </span>
+              <span>
+                <span className="mr-2 text-xs font-semibold text-muted sm:hidden">Motor</span>
+                {car.motor}
+              </span>
+            </li>
+          ))
+        ) : (
+          <EmptyState title="No hay autos de esta marca" />
+        )}
+      </ul>
+    </Modal>
+  );
+};
 
 export default ShowCars;

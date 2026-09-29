@@ -1,141 +1,187 @@
-'use client'
-import { useSelector, useDispatch } from "react-redux"
-import { useEffect, useState } from 'react';
+"use client";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { SlidersHorizontal } from "lucide-react";
 import { getAllProducts, getAllServiceTypes } from "../../redux/Slices/serviceSlice";
 import { getAllBrandCars } from "../../redux/Slices/brandSlice";
+import NavBar from "../components/NavBar";
+import Filters from "./filters";
+import ProductCard from "./ProductCard";
+import ProductDetail from "./ProductDetail";
+import { asProductList } from "./productUtils";
+import { Input, EmptyState, Spinner, Alert, Button, Modal, Badge } from "../components/ui";
 
-const productsData = [
-    {
-      id: 1,
-      name: 'Cambio de Aceite',
-      category: 'Mantenimiento',
-      compatibleVehicles: ['Toyota', 'Ford', 'Honda'],
-    },
-    {
-      id: 2,
-      name: 'Lavado Completo',
-      category: 'Limpieza',
-      compatibleVehicles: ['BMW', 'Mercedes', 'Audi'],
-    },
-    {
-      id: 3,
-      name: 'Alineación de Ruedas',
-      category: 'Mantenimiento',
-      compatibleVehicles: ['Toyota', 'Honda'],
-    },
-    {
-      id: 4,
-      name: 'Pulido de Carrocería',
-      category: 'Limpieza',
-      compatibleVehicles: ['Ford', 'Chevrolet'],
-    },
-    // Agrega más productos según sea necesario
-  ];
+const Products = () => {
+  const { products, serviceTypes, status, error } = useSelector((s) => s.service);
+  const { brands } = useSelector((s) => s.brand);
+  const dispatch = useDispatch();
 
-
-const Products = () => { 
-
-
-    const {products, serviceTypes} = useSelector(s => s.service)
-    const {brands} = useSelector(s => s.brand)
-    const dispatch = useDispatch()
-
-    console.log(brands)
-    console.log(products)
-
-
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedVehicle, setSelectedVehicle] = useState('');
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [selectedMotor, setSelectedMotor] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    dispatch(getAllProducts())
-    dispatch(getAllServiceTypes())
-    dispatch(getAllBrandCars())
-  },[])
+    dispatch(getAllProducts());
+    dispatch(getAllServiceTypes());
+    dispatch(getAllBrandCars());
+  }, [dispatch]);
 
-  // Filtros dinámicos basados en el nombre, categoría y vehículo
-  const filteredProducts = products.filter((product) => {
-    const matchesName = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory ? product.Service_type._id === selectedCategory : true;
+  const catalog = asProductList(products);
+  const query = searchTerm.trim().toLowerCase();
+
+  const filteredProducts = catalog.filter((product) => {
+    const name = (product.name || "").toLowerCase();
+    const description = (product.description || "").toLowerCase();
+    const matchesName = !query || name.includes(query) || description.includes(query);
+    const matchesCategory = selectedCategory
+      ? product.Service_type?._id === selectedCategory
+      : true;
     const matchesVehicle = selectedVehicle
-      ? product.brandCar.includes(selectedVehicle)
+      ? Array.isArray(product.brandCar) && product.brandCar.includes(selectedVehicle)
+      : true;
+    const matchesMotor = selectedMotor
+      ? Array.isArray(product.motor) && product.motor.includes(selectedMotor)
       : true;
 
-    return matchesName && matchesCategory && matchesVehicle;
+    return matchesName && matchesCategory && matchesVehicle && matchesMotor;
   });
 
+  const hasActiveFilters = Boolean(
+    searchTerm || selectedCategory || selectedVehicle || selectedMotor
+  );
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("");
+    setSelectedVehicle("");
+    setSelectedMotor("");
+  };
+
+  const filterProps = {
+    selectedCategory,
+    setSelectedCategory,
+    selectedVehicle,
+    setSelectedVehicle,
+    selectedMotor,
+    setSelectedMotor,
+    serviceTypes,
+    brands,
+    onClear: clearFilters,
+    hasActiveFilters,
+  };
+
+  const categoryName = serviceTypes?.find((s) => s._id === selectedCategory)?.name;
+  const vehicleName = brands?.brands?.find((b) => b._id === selectedVehicle)?.name;
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Barra lateral de filtros */}
-      <aside className="w-1/4 bg-white p-4 shadow-md">
-        <h2 className="text-xl font-bold mb-4">Filtrar Productos</h2>
-        
-        {/* Filtro por categoría */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Categoría</h3>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">Todas</option>
-            {serviceTypes && serviceTypes.map((s, i) => {
-                return <option key={i} value={s._id}>{s.name}</option>
-            })}
-           
-          </select>
+    <div className="min-h-screen bg-body">
+      <NavBar />
+      <div className="border-b border-border bg-surface">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+          <p className="text-sm font-semibold uppercase tracking-wide text-accent">Tienda</p>
+          <h1 className="mt-1 text-3xl font-bold text-heading sm:text-4xl">Productos y repuestos</h1>
+          <p className="mt-2 max-w-2xl text-muted">
+            Aceites, filtros y más, filtrados por tipo de servicio, marca de auto y motor.
+            Para instalarlos, reservá un turno.
+          </p>
         </div>
+      </div>
 
-        {/* Filtro por tipo de vehículo */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Tipo de Vehículo</h3>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedVehicle}
-            onChange={(e) => setSelectedVehicle(e.target.value)}
-          >
-            <option value="">Todos</option>
-           {brands.brands && brands.brands.map(b => {
-            return <option key={b._id} value={b._id}>{b.name}</option>
-           })}
-          </select>
-        </div>
-      </aside>
+      <div className="flex flex-col lg:flex-row">
+        <aside className="hidden w-full shrink-0 border-r border-border bg-surface p-5 lg:block lg:w-72">
+          <Filters {...filterProps} />
+        </aside>
 
-      {/* Contenido principal con productos */}
-      <main className="flex-1 p-6">
-        {/* Buscador */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="w-full border border-gray-300 p-3 rounded-lg"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <main className="min-w-0 flex-1 p-4 sm:p-6">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Input
+              type="search"
+              placeholder="Buscar por nombre o descripción..."
+              aria-label="Buscar productos"
+              className="flex-1"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button
+              variant="outline"
+              className="lg:hidden"
+              onClick={() => setFiltersOpen(true)}
+              aria-expanded={filtersOpen}
+            >
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+              Filtros
+            </Button>
+          </div>
 
-        {/* Listado de productos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-                <p className="text-gray-700">Categoría: {product.Service_type.name}</p>
-                {/* <p className="text-gray-700">
-                  Compatible con: {product.compatibleVehicles.join(', ')}
-                </p> */}
+          {hasActiveFilters ? (
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              {searchTerm ? <Badge>Busqueda: {searchTerm}</Badge> : null}
+              {categoryName ? <Badge variant="accent">{categoryName}</Badge> : null}
+              {vehicleName ? <Badge>{vehicleName}</Badge> : null}
+              {selectedMotor ? <Badge>{selectedMotor}</Badge> : null}
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                Quitar filtros
+              </Button>
+            </div>
+          ) : null}
+
+          {status === "loading" || (status === "idle" && catalog.length === 0) ? (
+            <Spinner label="Cargando productos..." />
+          ) : null}
+
+          {status === "failed" ? (
+            <Alert variant="danger" role="alert">
+              {error || "No pudimos cargar los productos."}
+            </Alert>
+          ) : null}
+
+          {status === "succeeded" || catalog.length > 0 ? (
+            <>
+              <p className="mb-4 text-sm text-muted">
+                {filteredProducts.length}{" "}
+                {filteredProducts.length === 1 ? "producto" : "productos"}
+              </p>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product._id || product.id}
+                      product={product}
+                      onOpen={setSelectedProduct}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    className="sm:col-span-2 xl:col-span-3"
+                    title="No se encontraron productos"
+                    description="Probá con otro nombre o quitá algún filtro."
+                  />
+                )}
               </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No se encontraron productos.</p>
-          )}
-        </div>
-      </main>
+            </>
+          ) : null}
+        </main>
+      </div>
+
+      <Modal isOpen={filtersOpen} onClose={() => setFiltersOpen(false)} title="Filtros">
+        <Filters {...filterProps} />
+        <Button className="mt-6 w-full" onClick={() => setFiltersOpen(false)}>
+          Ver resultados
+        </Button>
+      </Modal>
+
+      {selectedProduct ? (
+        <ProductDetail
+          product={selectedProduct}
+          brands={brands}
+          onClose={() => setSelectedProduct(null)}
+        />
+      ) : null}
     </div>
   );
-}
+};
 
 export default Products;

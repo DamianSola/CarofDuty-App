@@ -1,20 +1,24 @@
+import Button from "../ui/Button";
+import Card from "../ui/Card";
 
+const Intro = ({ step }) => {
+  const handleSubmit = () => {
+    step(1);
+  };
 
-const Intro = ({step}) => {
-
-    const handleSubmit = () => {
-        step(1)
-    }
-    return(
-    <div className="p-6 md:min-h-svh items-center text-center">
-
-        <h1 className="text-2xl text-gray-700 text-semibold p-4 m-auto">Hacé el tramite en 4 pasos</h1>
-        <button  className="w-full m-auto py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
-            onClick={handleSubmit}
-        >
-            Empecemos
-        </button>
-    </div>)
-}
+  return (
+    <Card className="p-6 text-center sm:p-10">
+      <h1 className="m-auto p-4 text-2xl font-bold sm:text-3xl">
+        Hacé el trámite en 4 pasos
+      </h1>
+      <p className="mb-6 text-muted">
+        Elegí tu auto, los servicios, tus datos y la fecha. El resumen se actualiza a medida que avanzás.
+      </p>
+      <Button className="w-full" onClick={handleSubmit}>
+        Empecemos
+      </Button>
+    </Card>
+  );
+};
 
 export default Intro;

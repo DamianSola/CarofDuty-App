@@ -1,60 +1,77 @@
+"use client";
 
+import { Label, Select, Button } from "../components/ui";
 
-import { useState } from "react";
+const Filters = ({
+  selectedCategory,
+  setSelectedCategory,
+  selectedVehicle,
+  setSelectedVehicle,
+  selectedMotor,
+  setSelectedMotor,
+  serviceTypes,
+  brands,
+  onClear,
+  hasActiveFilters,
+}) => {
+  return (
+    <div className="space-y-5">
+      <h2 className="text-xl font-bold text-heading">Filtrar productos</h2>
 
-const Filters = ({products}) => {
+      <div>
+        <Label htmlFor="filter-category">Categoría</Label>
+        <Select
+          id="filter-category"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">Todas</option>
+          {serviceTypes &&
+            serviceTypes.map((s, i) => (
+              <option key={i} value={s._id}>
+                {s.name}
+              </option>
+            ))}
+        </Select>
+      </div>
 
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedVehicle, setSelectedVehicle] = useState('');
+      <div>
+        <Label htmlFor="filter-vehicle">Marca de vehículo</Label>
+        <Select
+          id="filter-vehicle"
+          value={selectedVehicle}
+          onChange={(e) => setSelectedVehicle(e.target.value)}
+        >
+          <option value="">Todas</option>
+          {brands.brands &&
+            brands.brands.map((b) => (
+              <option key={b._id} value={b._id}>
+                {b.name}
+              </option>
+            ))}
+        </Select>
+      </div>
 
-    const filteredProducts = products.filter((product) => {
-        const matchesName = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
-        const matchesVehicle = selectedVehicle
-          ? product.compatibleVehicles.includes(selectedVehicle)
-          : true;
-    
-        return matchesName && matchesCategory && matchesVehicle;
-      });
+      <div>
+        <Label htmlFor="filter-motor">Variante de motor</Label>
+        <Select
+          id="filter-motor"
+          value={selectedMotor}
+          onChange={(e) => setSelectedMotor(e.target.value)}
+        >
+          <option value="">Todas</option>
+          <option value="nafta">Nafta</option>
+          <option value="diesel">Diesel</option>
+        </Select>
+      </div>
 
-    return (
-        <aside className="w-1/4 bg-white p-4 shadow-md">
-        <h2 className="text-xl font-bold mb-4">Filtrar Productos</h2>
-        
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Categoría</h3>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">Todas</option>
-            <option value="Mantenimiento">Mantenimiento</option>
-            <option value="Limpieza">Limpieza</option>
-          </select>
-        </div>
-
-        {/* Filtro por tipo de vehículo */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Tipo de Vehículo</h3>
-          <select
-            className="w-full border border-gray-300 p-2 rounded"
-            value={selectedVehicle}
-            onChange={(e) => setSelectedVehicle(e.target.value)}
-          >
-            <option value="">Todos</option>
-            <option value="Toyota">Toyota</option>
-            <option value="Ford">Ford</option>
-            <option value="Honda">Honda</option>
-            <option value="BMW">BMW</option>
-            <option value="Mercedes">Mercedes</option>
-            <option value="Audi">Audi</option>
-            <option value="Chevrolet">Chevrolet</option>
-          </select>
-        </div>
-      </aside>
-
-    )
-}
+      {hasActiveFilters ? (
+        <Button variant="ghost" className="w-full" onClick={onClear}>
+          Limpiar filtros
+        </Button>
+      ) : null}
+    </div>
+  );
+};
 
 export default Filters;

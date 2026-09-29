@@ -1,72 +1,66 @@
 'use client'
 
-import {useState, useEffect} from 'react'; 
+import {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {setDatesServices} from "./../../../redux/Slices/datesSlices";
 import {getAllServiceTypes, getAllProducts} from './../../../redux/Slices/serviceSlice';
 import Modal from "./modalChoise"
+import Button from "../ui/Button";
+import Select from "../ui/Select";
+import Card from "../ui/Card";
+import Alert from "../ui/Alert";
+import EmptyState from "../ui/EmptyState";
 
 const Step2 = ({sprint}) => {
-
     const dispatch = useDispatch()
-
-
     const [services, setServices] = useState([])
     const [oneService, setOneService] = useState({})
     const [open, setOpen] = useState(false)
     const [product, setProduct] = useState([])
+    const [feedback, setFeedback] = useState(null)
 
     const {serviceTypes} = useSelector(state => state.service)
     const {car,products} = useSelector(state => state.data)
 
-    const onClose = () => { //cierra el modal
+    const onClose = () => {
       setOpen(false)
     }
 
-    const catchProduct = (data) => { // esta funcion recibe el producto elegido por el usuario y lo agrega a la lista de servicios. 
+    const catchProduct = (data) => {
       let productChosen = products.find(p => p._id == data)
 
-      if(car.type == 'camioneta'){ // calcular el precio de una camioneta
-        
+      if(car.type == 'camioneta'){
         let priceService =(parseFloat(productChosen.price.$numberDecimal) * 1.20).toFixed(2);
         setServices([...services, {...oneService, product: productChosen, price:priceService}])
-
-      }else{ //dar el precio del servicio de un auto
-
+      }else{
         let priceAuto = (parseFloat(productChosen.price.$numberDecimal)).toFixed(2)
         setServices([...services, {...oneService, product: productChosen, price: priceAuto}])
-
       }
 
       setOneService({})
     }
 
-
-    const addService = (e) => { // en esta funcion se crea un servicio nuevo pero no
-        let {name, value} = e.target
-
+    const addService = (e) => {
+        let {value} = e.target
         let exist = services.find(e => e.service === value)
 
-        if(exist) alert('El servicio ya esta en la lista')
+        if(exist) setFeedback({variant: 'warning', message: 'El servicio ya está en la lista'})
 
         if(!car){
-          alert('Por favor, ingrese un vehiculo')
+          setFeedback({variant: 'danger', message: 'Por favor, ingresá un vehículo'})
         }
 
-
         if(!exist && car){
-
           const typeServiceProduct = products.filter(p => p.Service_type._id == value)
-          // dispatch(setProducts(typeServiceProduct))
           setProduct(typeServiceProduct)
-          
+
           if(typeServiceProduct.length === 0){
-            alert("lo siento no tenemos productos para este servicio")
-          }else{ 
+            setFeedback({variant: 'warning', message: 'Lo sentimos, no tenemos productos para este servicio'})
+          }else{
+            setFeedback(null)
             setOpen(true)
           }
-            let serviceType = serviceTypes.find(e => e._id === value)// encontrar el tipo de servicio
-            //calcular el precio del servcicio con el precio del producto y el tipo de auto
+            let serviceType = serviceTypes.find(e => e._id === value)
 
             let newService = {
                 name: serviceType.name,
@@ -82,7 +76,7 @@ const Step2 = ({sprint}) => {
 
     const handleSubmit = () => {
       if(services.length === 0){
-        alert('No hay servicios para agregar')
+        setFeedback({variant: 'danger', message: 'No hay servicios para agregar'})
       }else{
         dispatch(setDatesServices(services))
         sprint(3)
@@ -92,19 +86,22 @@ const Step2 = ({sprint}) => {
     useEffect(() => {
         dispatch(getAllServiceTypes())
         dispatch(getAllProducts())
-        
     },[dispatch])
 
     return (
-        <div className="flex flex-col p-4 border-2 mb-6 rounded-md border-gray-300 w-full  mx-auto bg-white shadow-lg">
+        <Card className="mx-auto mb-6 flex w-full flex-col p-5 sm:p-7">
             <Modal onClose={onClose} isOpen={open} catchProduct={catchProduct} product={product}/>
-            <p className="text-blue-600 font-semibold mb-2 text-lg">Paso 2</p>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Elegir servicios</h2>
+            <p className="mb-2 text-lg font-semibold text-accent">Paso 2</p>
+            <h2 className="mb-6 text-2xl font-bold sm:text-3xl">Elegir servicios</h2>
 
-            <section className="w-full mb-4">
-                {/* <label htmlFor="options" className="block text-left text-gray-700 font-medium mb-2">Servicio</label> */}
-                <select
-                    className="w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {feedback ? (
+              <Alert variant={feedback.variant} role="alert" className="mb-4">
+                {feedback.message}
+              </Alert>
+            ) : null}
+
+            <section className="mb-4 w-full">
+                <Select
                     id="options"
                     name="serviceType"
                     onChange={(e) => addService(e)}>
@@ -112,71 +109,58 @@ const Step2 = ({sprint}) => {
                         {serviceTypes && serviceTypes.map((e) => (
                     <option key={e._id} value={e._id}>{e.name}</option>
                     ))}
-                </select>
+                </Select>
             </section>
 
-            <section className='text-sm text-gray-600 font-semibold text-left'>
-            <p>Servicios: <strong>{services.length}</strong></p>
-            <p>Duracion total: <strong> {services.reduce((acc, service) => acc + service.duration, 0)} minutos</strong></p>
-            <p>Precio total: <strong> ${services.reduce((acc, service) => acc + parseFloat(service.price), 0)}</strong></p>
+            <section className='mb-4 text-left text-sm font-semibold text-muted'>
+            <p>Servicios: <strong className="text-ink">{services.length}</strong></p>
+            <p>Duración total: <strong className="text-ink"> {services.reduce((acc, service) => acc + service.duration, 0)} minutos</strong></p>
+            <p>Precio total: <strong className="text-ink"> ${services.reduce((acc, service) => acc + parseFloat(service.price), 0)}</strong></p>
             </section>
 
-            {/* Lista de servicios seleccionados */}
-            <section className="w-full mb-4">
-              <div className="bg-gray-50 p-4 rounded-md shadow-inner">
+            <section className="mb-4 w-full">
+              <div className="rounded-sm border border-border bg-body p-3 sm:p-4">
                 {services.length === 0 ? (
-                  <p className="text-gray-500">Vacío</p>
+                  <EmptyState title="Sin servicios" description="Elegí un servicio para agregarlo a tu reserva." />
                 ) : (
                   services.map((item, index) => (
-                    <div key={index} className="flex justify-between items-start py-4 border-b border-gray-200">
-                        <div className="flex flex-col text-left space-y-2">
-                          <p className="font-semibold text-lg text-gray-900">{item.name}</p>
-
+                    <div key={index} className="flex items-start justify-between border-b border-border py-4 last:border-b-0">
+                        <div className="flex flex-col space-y-2 text-left">
+                          <p className="text-lg font-semibold text-heading">{item.name}</p>
                           <div className="flex flex-col space-y-1">
-                            <p className="text-gray-700">Producto:</p>
-                            <p className="text-sm font-semibold text-gray-800">{item.product.name}</p>
-                            <p className="font-semibold text-gray-800">
+                            <p className="text-muted">Producto:</p>
+                            <p className="text-sm font-semibold text-ink">{item.product.name}</p>
+                            <p className="font-semibold text-ink">
                               ${parseFloat(item.product.price.$numberDecimal).toFixed(2)}
                             </p>
                           </div>
-
-                          <p className="text-gray-600">Duración: {item.duration}</p>
-
+                          <p className="text-muted">Duración: {item.duration}</p>
                           {car.type === 'camioneta' && (
-                            <p className="text-sm text-yellow-600 font-medium">
+                            <p className="text-sm font-medium text-warning">
                               El precio del servicio de una camioneta cuesta un 20% más
                             </p>
                           )}
-
-                          <p className="text-gray-600 font-medium">
-                            Precio total: <span className="text-gray-800 font-bold">${item.price}</span>
+                          <p className="font-medium text-muted">
+                            Precio total: <span className="font-bold text-ink">${item.price}</span>
                           </p>
                         </div>
-
-                        <button
-                          className="text-red-600 hover:text-red-800 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md font-semibold"
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => setServices(services.filter((_, i) => i !== index))}
                         >
                           Quitar
-                        </button>
+                        </Button>
                       </div>
-
                   ))
                 )}
               </div>
             </section>
-      
-            {/* Botón de siguiente */}
-            <button
-              className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
-              type="submit"
-              onClick={handleSubmit}
-            >
+
+            <Button className="w-full" type="submit" onClick={handleSubmit}>
               Siguiente
-            </button>
-
-          </div>
-
+            </Button>
+          </Card>
     )
 }
 

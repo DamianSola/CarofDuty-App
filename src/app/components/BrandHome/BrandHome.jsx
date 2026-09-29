@@ -1,47 +1,62 @@
-import Logo from "./logoBlue.png";
 import Image from "next/image";
+import Logo from "./logoBlue.png";
+import Spinner from "../ui/Spinner";
+import EmptyState from "../ui/EmptyState";
+import Alert from "../ui/Alert";
 
-const BrandHome = ({brand}) => {
-  
+const BrandHome = ({ brand, status, error }) => {
+  const list = brand?.brands;
+
+  if (status === "failed") {
     return (
-       <div className="flex flex-wrap w-full justify-center gap-4 p-2">
-          {brand.brands ? (
-              brand.brands.slice(2).map((b, index) => (
-              <div className='flex flex-col items-center p-2 w-fit rounded-lg bg-gray-200 shadow-lg transition-transform duration-300 hover:scale-105'
-              key={index}>
-              <img 
-              src={b.image}
-              width='90' 
-              height='90' 
-              alt={`brand-img-${b.name}`}
-              className='object-cover rounded-md m-auto'
-            />
+      <Alert variant="danger" role="alert">
+        {error || "No pudimos cargar las marcas."}
+      </Alert>
+    );
+  }
+
+  if (!list) {
+    return (
+      <div className="flex min-h-64 w-full flex-col items-center p-4 text-center">
+        <Image
+          width={180}
+          height={180}
+          className="m-auto rounded-md"
+          src={Logo}
+          alt=""
+        />
+        <Spinner label="Cargando marcas..." />
       </div>
-    ))
-  ) : (
-    <div className="flex flex-col w-full text-center h-dvw p-4 rounded-lg">
-      <Image 
-        width='300' 
-        height='300' 
-        className=" rounded-lg justify-center m-auto " 
-        src={Logo}
-        alt="Loading animation"
+    );
+  }
+
+  if (list.length === 0) {
+    return (
+      <EmptyState
+        title="Sin marcas"
+        description="Todavía no hay marcas para mostrar."
       />
-      <div className="w-full max-w-xs mx-auto">
-  <h2 className="mb-2 text-lg font-semibold text-gray-700">CARGANDO DATOS...</h2>
-  <div className="w-full bg-gray-200 rounded-full h-2.5">
-    <div 
-      className="bg-blue-600 h-2.5 rounded-full animate-progress" 
-      style={{ width: '45%' }}
-    ></div>
-  </div>
-</div>
+    );
+  }
+
+  return (
+    <div className="flex w-full flex-wrap justify-center gap-3 p-2 sm:gap-4">
+      {list.map((b) => (
+        <div
+          className="flex w-fit flex-col items-center rounded-sm border border-divider bg-body p-2 shadow-sm transition-transform duration-200 hover:scale-[1.03]"
+          key={b._id || b.name}
+        >
+          <img
+            src={b.image}
+            width="90"
+            height="90"
+            alt={`Logo de ${b.name}`}
+            className="m-auto rounded-sm object-cover"
+          />
+        </div>
+      ))}
     </div>
-  )}
-</div>
-
-    )
-}
-
+  );
+};
 
 export default BrandHome;

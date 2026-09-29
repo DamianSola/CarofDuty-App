@@ -1,16 +1,18 @@
-const Card = ({ title, showAddButton = true }) => {
-    return (
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <div className="flex space-x-4">
-          <button className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Ver</button>
-          {showAddButton && (
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Agregar</button>
-          )}
-        </div>
+import Button from "../components/ui/Button";
+import Card from "../components/ui/Card";
+
+const CardItem = ({ title, showAddButton = true }) => {
+  return (
+    <Card>
+      <h2 className="mb-4 text-xl font-bold">{title}</h2>
+      <div className="flex flex-wrap gap-3">
+        <Button variant="danger">Ver</Button>
+        {showAddButton && (
+          <Button>Agregar</Button>
+        )}
       </div>
-    );
-  };
-  
-  export default Card;
-  
+    </Card>
+  );
+};
+
+export default CardItem;

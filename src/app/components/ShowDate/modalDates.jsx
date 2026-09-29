@@ -1,91 +1,109 @@
 "use client"
 import {useSelector, useDispatch} from 'react-redux';
 import {setAllState} from '../../../redux/Slices/datesSlices'
+import { Download } from 'lucide-react';
+import ModalShell from '../ui/Modal';
+import Button from '../ui/Button';
+import Spinner from '../ui/Spinner';
+import Alert from '../ui/Alert';
+import { downloadTurnReceipt } from '../../../lib/downloadTurn';
 
 const Modal = ({ isOpen, onClose, status, response}) => {
-
     const dispatch = useDispatch()
-
     const {error} = useSelector(state => state.turn)
-    
+    const {car, services, customer} = useSelector((state) => state.data)
     const newTurn = response ? response.newTurn : null
-        
-    if (!isOpen) return null;
+
+    const handleDownload = () => {
+      downloadTurnReceipt({
+        turnNumber: newTurn?.turnNumber,
+        date: newTurn?.date,
+        customer,
+        car,
+        services: services?.length ? services : (response?.services || []),
+        message: response?.message,
+      })
+    }
 
     const handleAccept = () => {
         onClose(false)
         dispatch(setAllState())
     }
 
-
     if(status === 'loading'){
-        return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                <p className='m-auto text-bold text-2xl'>Cargando...</p>
-            </div>
-        </div>
+        return (
+          <ModalShell isOpen={isOpen} onClose={() => {}} title="Confirmando turno">
+            <Spinner label="Cargando..." />
+          </ModalShell>
+        )
     }
 
-
     if(status === 'failed' ){
-        return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                <p className='m-auto text-bold text-2xl'>Error</p>
-                <p className='m-auto text-bold text-lg'>{error}</p>
+        return (
+          <ModalShell isOpen={isOpen} onClose={handleAccept} title="Error">
+                <Alert variant="danger" role="alert" className="mb-4">{error}</Alert>
                 <div className="flex justify-end">
-                    <button
-                        onClick={handleAccept}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                    >
-                        aceptar
-                    </button>
+                    <Button onClick={handleAccept}>Aceptar</Button>
                 </div>
-            </div>
-        </div>
+          </ModalShell>
+        )
     }
 
     if(status === 'succeeded' )return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-
-                <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">{response.message}</h2>
-
+        <ModalShell isOpen={isOpen} onClose={() => onClose(false)} title={response.message}>
                 <div className="mb-6">
-                    <h3 className="text-lg font-medium text-gray-800">Número de Turno</h3>
-                    <p className="text-gray-500 text-3xl font-bold">{newTurn.turnNumber}</p>
+                    <h3 className="text-lg font-medium text-heading">Número de turno</h3>
+                    <p className="text-3xl font-bold text-muted">{newTurn.turnNumber}</p>
                 </div>
                 <div className="mb-6">
-                    <h3 className="text-lg font-medium text-gray-800">Fecha y Hora</h3>
-                    <p className="text-blue-700">{new Date(newTurn.date).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' })}</p>
+                    <h3 className="text-lg font-medium text-heading">Fecha y hora</h3>
+                    <p className="text-accent">{new Date(newTurn.date).toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' })}</p>
                 </div>
-
-
+                {customer ? (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-medium text-heading">Cliente</h3>
+                    <p className="font-semibold text-ink">{customer.name}</p>
+                    <p className="text-sm text-muted">{customer.email}</p>
+                    {customer.phone ? <p className="text-sm text-muted">{customer.phone}</p> : null}
+                  </div>
+                ) : null}
+                {car ? (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-medium text-heading">Vehículo</h3>
+                    <p className="font-semibold text-ink">{car.name}</p>
+                    <p className="text-sm text-muted">
+                      {[car.brand?.name, car.type, car.motor].filter(Boolean).join(" · ")}
+                    </p>
+                  </div>
+                ) : null}
                 <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-800">Servicios</h3>
+                <h3 className="text-lg font-medium text-heading">Servicios</h3>
                 {response.services.length > 0 ? (
                     response.services.map((s, index) => (
-                    <div key={index} className="flex justify-between items-center bg-gray-100 p-2 rounded-md mb-2">
-                        <p className="text-gray-700">{s.name}</p>
-                        <p className="text-gray-700 font-semibold">${s.price}</p>
+                    <div key={index} className="mb-2 flex items-center justify-between rounded-sm bg-body p-2">
+                        <p className="text-ink">{s.name}</p>
+                        <p className="font-semibold text-ink">${s.price}</p>
                     </div>
                     ))
                 ) : (
-                    <p className="text-gray-500 italic">El turno no tiene servicios agregados</p>
+                    <p className="italic text-muted">El turno no tiene servicios agregados</p>
                 )}
                 </div>
-
-                <div className="flex justify-end">
-                    <button
-                        onClick={() => onClose(false)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                    >
-                        aceptar
-                    </button>
+                <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                    <Button variant="outline" onClick={handleDownload}>
+                        <Download className="h-4 w-4" aria-hidden="true" />
+                        Descargar comprobante
+                    </Button>
+                    <Button onClick={() => onClose(false)}>Aceptar</Button>
                 </div>
-            </div>
-        </div>
-
+        </ModalShell>
     );
+
+    return isOpen ? (
+      <ModalShell isOpen={isOpen} onClose={() => onClose(false)} title="Turno">
+        <Spinner />
+      </ModalShell>
+    ) : null;
 };
 
 export default Modal;

@@ -1,66 +1,60 @@
-'use client'
-import {useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {getAllServiceTypes, deleteServiceType} from './../../../redux/Slices/serviceSlice'
+"use client";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllServiceTypes, deleteServiceType } from "./../../../redux/Slices/serviceSlice";
+import { Modal, Button, EmptyState } from "../ui";
 
+const ShowServices = ({ close }) => {
+  const dispatch = useDispatch();
+  const { serviceTypes } = useSelector((s) => s.service);
 
-const ShowServices = () => {
+  const deleteButton = (id) => {
+    const isConfirmed = window.confirm("¿Seguro que quieres eliminar?");
 
-    const dispatch = useDispatch()
-    const {serviceTypes} = useSelector(s => s.service)
-
-
-    const deleteButton = (id) => {
-        const isConfirmed = window.confirm('¿Seguro que quieres eliminar?');
-  
-        if (isConfirmed) {
-            dispatch(deleteServiceType(id))
-            
-        } else {
-            console.log('Eliminación cancelada');
-        }
-        // dispatch(deleteServiceType)
+    if (isConfirmed) {
+      dispatch(deleteServiceType(id));
+    } else {
+      console.log("Eliminación cancelada");
     }
+  };
 
-    useEffect(() => {
-        dispatch(getAllServiceTypes())
-    },[])
+  useEffect(() => {
+    dispatch(getAllServiceTypes());
+  }, []);
 
-    return(
-        <div>
-            <ul className='py-8'>
-                {/* {serviceTypes.data && serviceTypes.data.map((service, index) => {
-                    return <li className='table-row' key={index} >
-                        <div className='flex'>
-                        <span className='table-cell'>{service.name}</span>
-                        <span className='table-cell'>duracion: {service.duration}</span>
-                        </div>
-                        <span className='table-cell'>{service.description}</span>
-                    </li>
-                })
-                } */}
-                {serviceTypes && serviceTypes.map((service, index) => {
-                    return (
-                        <div className="flex flex-col md:flex-row bg-gray-100 p-4 mb-2 rounded-lg shadow-md" key={index}>
-                            <div className="flex-1 font-bold text-lg text-blue-600 mb-2 md:mb-0">
-                                {service.name}
-                            </div>
-                            <aside className="flex-1 text-gray-600 mb-2 md:mb-0">
-                                Duración: {service.duration} minutos
-                            </aside>
-                            <aside className="flex-1 text-gray-500">
-                                {service.description}
-                            </aside>
-                            <div className="flex-wrap">
-                                {/* <button className='simple-button text-blue-500'>actualizar</button> */}
-                                <button className='simple-button text-red-500 ' onClick={() => deleteButton(service._id)}>borrar</button>
-                            </div>
-                        </div>
-                    );
-                })}
-            </ul>
-        </div>
-    )
-}
+  const list = (
+    <ul className="space-y-3 py-2">
+      {serviceTypes && serviceTypes.length > 0 ? (
+        serviceTypes.map((service, index) => (
+          <li
+            className="flex flex-col gap-2 rounded-sm border border-border bg-body p-4 md:flex-row md:items-start md:justify-between"
+            key={index}
+          >
+            <div className="min-w-0 flex-1">
+              <p className="text-lg font-bold text-heading">{service.name}</p>
+              <p className="text-sm text-muted">Duración: {service.duration} minutos</p>
+              <p className="text-sm text-muted">{service.description}</p>
+            </div>
+            <Button variant="danger" size="sm" onClick={() => deleteButton(service._id)}>
+              Borrar
+            </Button>
+          </li>
+        ))
+      ) : (
+        <EmptyState title="No hay servicios" description="Todavía no hay tipos de servicio cargados." />
+      )}
+    </ul>
+  );
+
+  if (close) {
+    return (
+      <Modal isOpen onClose={close} title="Servicios" className="max-w-2xl">
+        {list}
+      </Modal>
+    );
+  }
+
+  return <div>{list}</div>;
+};
 
 export default ShowServices;

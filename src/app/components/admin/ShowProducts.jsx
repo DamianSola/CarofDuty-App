@@ -1,73 +1,85 @@
-const { useEffect, useState } = require("react")
-const { useDispatch, useSelector } = require("react-redux")
-import {getAllProducts,deleteOneProduct} from "./../../../redux/Slices/serviceSlice"
+const { useEffect, useState } = require("react");
+const { useDispatch, useSelector } = require("react-redux");
+import { getAllProducts, deleteOneProduct } from "./../../../redux/Slices/serviceSlice";
+import { Modal, Input, Button, EmptyState, Label } from "../ui";
 
-const ShowProducts = () => {
+const ShowProducts = ({ close }) => {
+  const dispatch = useDispatch();
+  const { products } = useSelector((s) => s.service);
 
-    const dispatch = useDispatch()
-    const {products} = useSelector(s => s.service)
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const [searchTerm, setSearchTerm] = useState('');
+  const handleDelete = (id) => {
+    const isConfirmed = window.confirm("¿Seguro que quieres eliminar?");
 
-    const handleDelete = (id) =>{
-        const isConfirmed = window.confirm('¿Seguro que quieres eliminar?');
-  
-        if (isConfirmed) {
-            dispatch(deleteOneProduct(id))
-            
-        } else {
-            console.log('Eliminación cancelada');
-        }
+    if (isConfirmed) {
+      dispatch(deleteOneProduct(id));
+    } else {
+      console.log("Eliminación cancelada");
     }
+  };
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, []);
+
+  const list = (
+    <div>
+      <div className="mb-4">
+        <Label htmlFor="search-product">Buscar producto</Label>
+        <Input
+          id="search-product"
+          type="text"
+          placeholder="Buscar producto..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <ul className="space-y-3">
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((p) => (
+            <li
+              key={p._id}
+              className="flex flex-col gap-2 rounded-sm border border-border bg-body p-4 md:flex-row md:items-start md:justify-between"
+            >
+              <div className="min-w-0 flex-1 space-y-1">
+                <p className="text-lg font-bold text-heading">{p.name}</p>
+                <p className="text-sm text-muted">{p.description}</p>
+                <p className="text-sm text-ink">$ {parseFloat(p.price.$numberDecimal)}</p>
+                <p className="text-sm text-muted">Stock: {p.stock}</p>
+                <p className="text-sm text-muted">
+                  Motor: {p.motor.map((m) => (
+                    <span key={m} className="mr-1">
+                      {m}
+                    </span>
+                  ))}
+                </p>
+              </div>
+              <Button variant="danger" size="sm" onClick={() => handleDelete(p._id)}>
+                Eliminar
+              </Button>
+            </li>
+          ))
+        ) : (
+          <EmptyState title="No hay productos" />
+        )}
+      </ul>
+    </div>
+  );
+
+  if (close) {
+    return (
+      <Modal isOpen onClose={close} title="Productos" className="max-w-3xl">
+        {list}
+      </Modal>
     );
+  }
 
-    useEffect(()=>{
-        dispatch(getAllProducts())
-    },[])
-
-
-    return(
-        <div>
-            <div className="flex flex-col justify-center md:flex-row  p-4 mb-2">
-                <div className="justify-center flex-1">nombre</div>
-                <div className="justify-center flex-1">descripcion</div>
-                <div className="justify-center flex-1">precio</div>
-                <div className="justify-center flex-1">cantidad</div>
-                <div className="justify-center flex-1">motor</div>
-                <div className="justify-center flex-1">
-                    <input
-                        type="text"
-                        placeholder="Buscar producto..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full p-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-                </div>
-            </div>
-            <ul className='table-list'>
-                
-                { filteredProducts ? filteredProducts.map(p => {
-                    return <div key={p._id} className="flex flex-col justify-center md:flex-row bg-gray-100 p-4 mb-2 rounded-lg shadow-md">
-                        <div className="justify-center flex-1 font-bold text-lg text-blue-600 mb-2 md:mb-0">{p.name}</div> 
-                        <div className="justify-center flex-1  text-gray-500">{p.description}</div>
-                        <div className="justify-center flex-1 text-gray-500">
-                            <p>$ {parseFloat(p.price.$numberDecimal)}</p>
-                        </div>
-                        <div className="justify-center flex-1 text-gray-500">{p.stock}</div>
-                        <div className="justify-center flex-1 text-gray-500">{p.motor.map(m => <p key={m}>{m}</p>)}</div>
-                        <div className="items-center justify-center">
-                        <button className='flex-1 simple-button text-red-500 bg-grey px-2 mx-2 ' onClick={() => handleDelete(p._id)}>eliminar</button>
-                        </div>
-                        {/* <button  className='text-blue-500 bg-grey px-2 mx-2 '>actualizar</button> */}
-                    </div>}
-                ):
-                <li className='table-row'><span className='col'>No hay productos</span></li>}
-            </ul>
-        </div>
-    )
-}
+  return list;
+};
 
 export default ShowProducts;
